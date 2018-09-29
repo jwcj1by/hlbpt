@@ -1,0 +1,22 @@
+page {
+  background-color: #f0f0f0;
+}
+.manage {
+  width: 750rpx;
+  height: 98rpx;
+  background-color: #fff;
+  color: #333;
+  margin: 20rpx auto 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-size: 30rpx;
+}
+.manage text {
+  margin-left: 20rpx;
+}
+.manage image {
+  width: 56rpx;
+  height: 56rpx;
+  margin-left: 20rpx;
+}

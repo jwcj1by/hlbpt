@@ -1,0 +1,72 @@
+<view class="main">
+  <view class="userinfo">
+    <image mode="widthFix" class="user-bg" src="/image/user-top.png"></image>
+    
+    <view class='user-bgs'>
+      <image mode="widthFix" class="user-bg-img" src="/image/icon-u-bg.png"></image>
+    </view>
+    <view class='user-box'>
+      <image class="userinfo-avatar" src="{{user_info.avatar_url}}"></image>
+      <text class="userinfo-nickname flex-x-center flex-y-center">{{user_info.nickname}}</text>
+      <text class="userinfo-cen flex-x-center flex-y-center">微信用户</text>
+    </view>
+    
+  </view>
+  
+  <view class='o-box'>
+    <view class='o-title icon-right'>
+    我的订单
+    <navigator url="/pages/order/order?status=-1" class='order-all'>全部订单</navigator>
+    </view>
+
+    <view class="nav-box">
+      <navigator class="nav-icon" url="/pages/order/order?status=0">
+        <image mode="widthFix" class="nav-icon-png" src="/image/icon-topay.png" /> 待付款
+        <view class="num-icon" wx:if="{{order_count.status_0 && order_count.status_0 > 0}}">{{order_count.status_0}}</view>
+      </navigator>
+
+      <navigator class="nav-icon" url="/pages/order/order?status=5">
+        <image class="nav-icon-png" mode="widthFix" src="/image/icon-toshare.png"></image>
+        待分享
+      </navigator>
+
+      <navigator class="nav-icon" url="/pages/order/order?status=1">
+        <image class="nav-icon-png" mode="widthFix" src="/image/icon-pending-delivery.png"></image>
+        待发货
+      </navigator>
+
+      <navigator class="nav-icon" url="/pages/order/order?status=2">
+        <image class="nav-icon-png" mode="widthFix" src="/image/icon-after-receiving.png"></image>
+        待收货
+      </navigator>
+
+      <navigator class="nav-icon" url="/pages/order/order?status=3">
+        <image class="nav-icon-png" mode="widthFix" src="/image/icon-toevaluate.png"></image>
+        待评价
+      </navigator>
+    </view>
+  </view>
+
+<view class='manage-box'>
+  <navigator  url="../my-zero-order/my-zero-order" class="manage icon-right">
+    <image mode="widthFix" src="/image/icon-u1.png"></image>
+    <text>我的0元购</text>
+  </navigator>
+
+  <navigator url="../my-tan/my-tan" class="manage icon-right">
+    <image mode="widthFix" src="/image/icon-u2.png"></image>
+    <text>我的拼团</text>
+  </navigator>
+
+  <navigator url="../service/service" class="manage icon-right">
+    <image mode="widthFix" src="/image/icon-u3.png"></image>
+    <text>帮助中心</text>
+  </navigator>
+
+  <navigator url="../address/address" class="manage icon-right">
+    <image mode="widthFix" src="/image/icon-u4.png"></image>
+    <text>收货地址</text>
+  </navigator>
+</view>
+
+</view>

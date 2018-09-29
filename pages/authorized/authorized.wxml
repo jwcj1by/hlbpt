@@ -1,0 +1,2 @@
+<!--pages/authorized/authorized.wxml-->
+<button class='authorized_btn' type="primary" open-type='getUserInfo' bindgetuserinfo="userInfoHandler"> 用户授权 </button>

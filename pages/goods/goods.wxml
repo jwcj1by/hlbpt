@@ -1,0 +1,260 @@
+<!--goods.wxml-->
+<view class="flex-row tab-group-header">
+	<view bindtap="tabSwitch" data-tab="detail" class="flex-grow-1 flex-x-center tab-group-item {{tab_detail}}">
+		<text class="flex-y-center">商品</text>
+	</view>
+	<view bindtap="tabSwitch" data-tab="goods" class="flex-grow-1 flex-x-center tab-group-item {{tab_goods}}">
+		<text class="flex-y-center">详情</text>
+	</view>
+	<view bindtap="tabSwitch" data-tab="comment" class="flex-grow-1 flex-x-center tab-group-item {{tab_comment}}">
+		<text class="flex-y-center">评价</text>
+	</view>
+	<button open-type="share" class="share-btn">
+		<image style="width:45rpx;height:45rpx" src="/image/icon-share.png" />
+	</button>
+</view>
+<view class="{{(show_attr_picker||show||no_scroll)?'no-scroll':''}}">
+	<view class="attr-picker" wx:if="{{show_attr_picker}}">
+		<view class="content-box">
+			<view class="flex-row" style="border-bottom: 1rpx solid #e3e3e3;padding: 52rpx 28rpx;height:100px;">
+				<view class="flex-grow-0">
+					<view class="goods-pic-box">
+						<image mode="aspectFill" src="{{goods.pic_list[0].pic_url}}" />
+					</view>
+				</view>
+				<view class="flex-grow-1" style="padding: 0 24rpx;position:absolute;top:96rpx;left:180rpx;">
+					<view style="color:#ff4544;margin-bottom: 12rpx;" wx:if="{{types == 'tan'}}">价格:￥{{ cartPrice == 'one' ? goods.original_price : goods.price }} </view>
+					<view style="color:#ff4544;margin-bottom: 12rpx;" wx:else>价格:￥{{ cartPrice == 'one' ? goods.original_price : goods.price }} </view>
+					<view style="font-size:9pt;color:#999;">
+						<block>请选择规格属性库存</block>
+					</view>
+				</view>
+				<view class="flex-grow-0" style="position:absolute;top:0;right:10rpx;">
+					<view bindtap="hideAttrPicker" class="flex-x-center flex-y-center" style="width: 100rpx;height: 100rpx">
+						<image style="width: 30rpx;height: 30rpx" src="/image/icon-close.png" />
+					</view>
+				</view>
+			</view>
+			<scroll-view scroll-y="true" style="max-height: 650rpx;">
+				<view style="padding: 24rpx 28rpx;font-size:26rpx; color:#333;">
+					<view>
+						<view
+						      class="attr-group"
+						      wx:key="{{index}}"
+						      wx:for="{{attr_group_list}}"
+						      wx:for-item="attr_group"
+						      wx:if="{{attr_group.attr_list.length>0}}">
+							<view class="attr-group-name">{{attr_group.attr_group_name}}</view>
+							<view class="attr-list">
+								<text
+								      class="attr-item {{item.checked?'active':''}}"
+								      wx:key="{{index}}"
+								      wx:for="{{attr_group.attr_list}}"
+								      data-group-id="{{attr_group.attr_group_id}}"
+								      data-id="{{item.attr_id}}"
+								      bindtap="attrClick">
+									{{item.attr_name}}
+								</text>
+							</view>
+						</view>
+					</view>
+
+					<view style="padding-bottom: 40rpx" wx:if="{{ types == 'tan' || cartbuy != 'BUY_NOW'}}">
+						<view class="flex-col mb-20">
+							<view class="flex-grow-1 mb-20">数量</view>
+							<view class="flex-grow-0">
+
+								<view class="flex-row number-input-box">
+									<view class="flex-grow-0 flex-x-center flex-y-center number-btn number-sub {{form.number<=1?'disabled':''}}" bindtap="numberSub">-
+									</view>
+									<view class="flex-grow-0">
+										<input
+										       class="flex-grow-1 number-input"
+										       value="{{form.number}}"
+										       type="number"
+										       step="1"
+										       min="1"
+										       bindblur="numberBlur" />
+									</view>
+									<view class="flex-grow-0 flex-x-center flex-y-center number-btn number-add" bindtap="numberAdd">+
+									</view>
+								</view>
+
+							</view>
+						</view>
+					</view>
+				</view>
+			</scroll-view>
+			<button class='buy-btn' bindtap='submitBuy'>确定</button>
+		</view>
+	</view>
+
+	<!-- 内容 -->
+	<view style="padding-top: 80rpx" class='tab-group-items {{tab_detail}}'>
+		<!-- 轮播图 -->
+		<swiper
+		        class="goods-image-swiper"
+		        autoplay="{{autoplay}}"
+		        interval="5000"
+		        duration="300"
+		        indicator-color="#bbb"
+		        indicator-active-color="#e71a41"
+		        indicator-dots="true"
+		        circular="true"
+		        bindchange="hide">
+			<block wx:for="{{goods.pic_list}}" wx:key="index">
+				<swiper-item>
+					<block wx:if="{{goods.video_url}}">
+						<image
+						       class="play {{img_hide}}"
+						       src="/image/video-play.png"
+						       data-url="{{goods.video_url}}"
+						       bindtap="play" />
+					</block>
+					<image
+					       bindtap="onGoodsImageClick"
+					       data-index="{{index}}"
+					       class="goods-image"
+					       src="{{item.pic_url}}"
+					       mode="aspectFill" />
+				</swiper-item>
+			</block>
+		</swiper>
+		<!-- 团购显示 -->
+		<view class='goods-tan' wx:if="{{ types == 'tan' }}">
+			<image class='goods-pp-bg' src="/image/goods-pp-bg.png" />
+			<view class='goods-tan-text'>
+				<view class='goos-tan-tw'>二人团</view>
+				<text style="font-size: 28rpx;">￥</text>
+				<text style="font-size: 56rpx">{{goods.price}}</text>
+
+				<text class='goods-dm'>单买价￥{{goods.original_price}}</text>
+				<text class='goods-jstime'>距结束 {{ clock }}</text>
+			</view>
+		</view>
+		<!-- 商品信息 -->
+		<view class="goods-info" style="background: #fff;padding:10rpx 24rpx;border-bottom: 1rpx solid #eee ">
+			<view class='goods-name'>{{goods.name}}</view>
+			<view class='goods-name-tip'>{{goods.service}}</view>
+			<view class="flex-row flex-y-center">
+				<view class="flex-grow-1 flex-row flex-y-bottom">
+					<text class='goods-volume'> {{ types == 'tan' ? '已团购' + goods.sales_volume : '已0元购' + goods.promotions.sell_num}}{{goods.unit}}</text>
+				</view>
+			</view>
+		</view>
+		<import src="../template/zp-sm.wxml" />
+		<template is="iconbz" />
+		<view class="mb-20" />
+
+		<view class='icon-zz'>
+			<image src="/image/icon-zz.png" />
+			{{types == 'tan' ? goods.group_buy && goods.group_buy.group_buy_count + '人正在开团，可直接参与' : goods.promotions && goods.promotions.pro_count + '人正在参与0元购' }}
+		</view>
+		<!-- 团购显示 -->
+		<view class='tan-box' wx:if="{{ types == 'tan' }}">
+			<block wx:for="{{goods.group_buy && goods.group_buy.buyers}}" wx:key="{{index}}">
+				<view class='tan-two' wx:if="{{groupTime[index] != '00:00:00'}}">
+					<view class='tan-two-name flex flex-y-center'>
+						<image src="{{item.head_img}}" />
+						{{item.nick_name}}
+					</view>
+					<view class='flex-row'>
+						<view class='tan-two-time'>
+							<text class='two-a'>
+								还差
+								<text class='two-c'>1人</text>
+								拼成
+							</text>
+							<text class='two-b'>剩余 {{groupTime[index] == null ?"":groupTime[index]}}</text>
+						</view>
+						<button class='tan-two-btn' data-v="{{ item }}" bindtap='onToTan'>去拼团</button>
+					</view>
+				</view>
+			</block>
+		</view>
+
+		<view class="mb-20" />
+		<view class='flex-row flex-y-center goods-pj icon-right'>
+			<view class='flex-x-center goods-pj-n'>
+				<image src="/image/icon-im.png" />
+				评价 （{{all_comments}}）
+			</view>
+
+			<view class='goods-pj-r'>
+				<text class='goods-pj-hao' wx:if="{{ good_rate > 0}}">{{ good_rate}}%好评</text>
+				<text bindtap='onMome'>查看更多</text>
+			</view>
+
+		</view>
+		<view class='goods-pjs'>
+			<import src="../template/goods-pj.wxml" />
+			<template is="goodspj" data="{{ comment_list }}" />
+		</view>
+
+	</view>
+
+	<view class="flex-row bar-bottom">
+		<view class="flex-grow-0 flex-row bar-home-kf">
+			<navigator class="flex-grow-0 flex-y-center bar-bottom-btn" url="/pages/index/index" open-type="switchTab">
+				<view>
+					<image src="/image/12s.png" />
+					<text>首页</text>
+				</view>
+			</navigator>
+
+			<button class="flex-grow-0 flex-y-center bar-bottom-btn" open-type="contact" plain="true">
+				<view>
+					<image src="/image/kf.png" />
+					<text>客服</text>
+				</view>
+			</button>
+		</view>
+		<view class="flex-grow-1 flex-row">
+			<button disabled='{{goods.promotions && goods.promotions.can_buy != 1}}' class="flex-grow-1 flex-y-center flex-x-center add-cart" bindtap="addCart">
+				<text>￥{{ types == 'tan' ? goods.original_price : goods.price }}</text>
+				单独购买
+			</button>
+			<button
+			        disabled='{{goods.promotions && goods.promotions.can_buy != 1}}'
+			        wx:if="{{ types == 'tan' }}"
+			        class="flex-grow-1 flex-y-center flex-x-center buy-now"
+			        bindtap="buyNow">
+				<text>￥{{goods.price}}</text>
+				我要开团
+			</button>
+			<button
+			        disabled='{{goods.promotions && goods.promotions.can_buy != 1}}'
+			        wx:else
+			        class="flex-grow-1 flex-y-center flex-x-center buy-now"
+			        bindtap="buyNow">
+				0元购
+			</button>
+
+		</view>
+	</view>
+</view>
+
+<view class="tab-group">
+	<view style='height:80rpx;' />
+	<view class="tab-group-items {{tab_detail}}" />
+
+	<view class="tab-group-items {{tab_comment}}">
+		<view class="comment-list" wx:if="{{ comment_list.length > 0 }}">
+			<import src="../template/goods-pj.wxml" />
+			<template is="goodspj" data="{{ comment_list }}" />
+		</view>
+		<view wx:else class='flex-y-center flex-x-center' style='margin-top:100rpx;color:#666;'>
+			没有评价！
+		</view>
+	</view>
+
+	<view class="tab-group-items {{tab_goods}}">
+		<view class="goods-detail">
+			<import src="../../wxParse/wxParse.wxml" />
+			<template is="wxParse" data="{{wxParseData:detail.nodes}}" />
+		</view>
+	</view>
+
+</view>
+<view style='height:100rpx;' />
+

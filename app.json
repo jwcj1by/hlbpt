@@ -1,0 +1,64 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/user/user",
+    "pages/my-zero-order/my-zero-order",
+    "pages/express-detail/express-detail",
+    "pages/my-tan/my-tan",
+    "pages/order-detail/order-detail",
+    "pages/zeroyuan/zeroyuan",
+    "pages/tan-detail/tan-detail",
+    "pages/goods/goods",
+    "pages/order-submit/order-submit",
+    "pages/service/service",
+    "pages/order/order",
+    "pages/dynamicdetail/dynamicdetail",
+    "pages/order-comment/order-comment",
+    "pages/address-picker/address-picker",
+    "pages/address-edit/address-edit",
+    "pages/address/address",
+    "pages/authorized/authorized",
+    "pages/category/category",
+    "pages/standard-good-detail/standard-good-detail",
+    "pages/shopping-cart/shopping-cart"
+  ],
+  "window": {
+    "backgroundTextStyle": "dark",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "红喇叭拼团",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#f2f2f2"
+  },
+  "tabBar": {
+    "color": "#7f8389",
+    "selectedColor": "#e71a41",
+    "borderStyle": "#eaebec",
+    "backgroundColor": "#f7f7fa",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "image/icon1.png",
+        "selectedIconPath": "image/icon1_selected.png",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/category/category",
+        "iconPath": "image/icon2.png",
+        "selectedIconPath": "image/icon2_selected.png",
+        "text": "分类"
+      },
+      {
+        "pagePath": "pages/shopping-cart/shopping-cart",
+        "iconPath": "image/icon3.png",
+        "selectedIconPath": "image/icon3_selected.png",
+        "text": "购物车"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "iconPath": "image/icon4.png",
+        "selectedIconPath": "image/icon4_selected.png",
+        "text": "我的"
+      }
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+page {
+  background-color: #fff;
+}
+
+.addr-b {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 730rpx;
+  height: 98rpx;
+  margin-left:20rpx;
+  border-bottom: 1px solid #e5e5e5;
+  color: #333;
+}
+.addr-b text {
+	color: #bbb;
+}
+.placeholder{
+  color: #bbb;
+}
+.adr-setml{
+  font-size: 28rpx;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  margin: 30rpx 0;
+}
+ .adr-setml icon {
+   margin-right: 12rpx;
+ }
+.adr-add {
+  background-color: #e71a41;
+  height: 98rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32rpx;
+  width: 750rpx;
+  position: fixed;
+  bottom: 0;
+  z-index: 22;
+  color: #fff;
+}
+.edit-row {
+  margin: auto;
+  width: 710rpx;
+}
+
+.edit-row:first-child {
+  
+}
+
+.edit-row .row-label {
+  margin: 20rpx 0;
+  min-width: 140rpx;
+}
+
+.get-wechat-address {
+  text-align: center;
+  background: #000;
+  color: #fff;
+  padding: 18rpx 0;
+  margin: 32rpx 24rpx;
+  border-radius: 66rpx;
+  display: block;
+}
+
+.get-wechat-address:active {
+  opacity: 0.85;
+}

@@ -1,0 +1,23 @@
+<view class="main">
+  <view class='vip-detail'>
+
+    <!-- <view class='detail-h3'>
+      <text class='fw-b'>{{title}}</text>
+    </view> -->
+
+
+    <view class='detail-name'>
+      <import src="../../wxParse/wxParse.wxml" />
+      <template is="wxParse" data="{{wxParseData:content.nodes}}" />
+
+
+      <import src="../template/zan.wxml" />
+      <template is="zan" data="{{counts}}" />
+
+
+    </view>
+  </view>
+
+  <import src="../template/comment.wxml" />
+  <template is="comment" data="{{data,onShows}}" />
+</view>

@@ -1,0 +1,5 @@
+<view class="main">
+  <navigator wx:for="{{list}}" url="../dynamicdetail/dynamicdetail?id={{item.id}}" class="manage icon-right">
+    <text>{{item.title}}</text>
+  </navigator>
+</view>

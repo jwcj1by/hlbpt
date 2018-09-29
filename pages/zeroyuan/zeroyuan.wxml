@@ -1,0 +1,100 @@
+<view class="main">
+  <view class="benner">
+    <image mode="widthFix" style='width:100%;' src="/image/home-b1.png"></image>
+  </view>
+
+  <view class='zero-p'>
+    <image mode="widthFix" style='width:100%;' src="/image/icon-bg-sh.png"></image>
+    
+    <view class='h-list'>
+      <view class='h-item-two'>
+        <view class='h-view'>
+          <view class='h-title'>{{ order.promotions.goods_name }}</view>
+          <text>{{ order.promotions.attr }}</text>
+          <view class='h-bt'>
+            <text class='h-jr'>¥{{ order.promotions.promo_price }}</text>
+            <text class='h-yj'>¥{{ order.promotions_offsetprice }}</text>
+          </view>
+        </view>
+        <view class='p-img-two'><image class='p-img-w' mode="widthFix" src="{{ order.promotions.goods_image }}" /></view>
+      </view>
+    </view>
+
+  </view>
+
+  <view class='flex-col flex-y-center'>
+    <image class='zero-user-img' src="{{order.promotions.user_image}}"></image>
+    <view class='zero-h1' wx:if="{{ order.promotions && order.promotions.helps.user_status != 'myself' }}">{{order.name}}邀请您帮ta助力0元购</view>
+    <view class='zero-h1' wx:else>赶快邀请您的好友助力0元购</view>
+    <view class='zero-h2'>当能量条满的时候将完成0元购</view>
+    <view class='zero-h3' wx:if="{{ order.promotions_status==0 }}">剩余时间 {{clock}}</view>
+    
+    <view class='progress-bg'>
+      <image class='zero-progress-img' src="/image/progress-bg.png"></image>
+      <view class='progress-bg-r flex-x-center' style="{{ 'width:' + zeros + '%' }}">
+        <image class='progress-bg-img' mode='left' src="/image/progress-bg-r.png"></image>
+        <image class='progress-top' mode='widthFix' src="/image/progress-top.png"></image>
+      </view>
+    </view>
+    
+    <block wx:if="{{ order.promotions && order.promotions.helps.user_status != 'myself' }}">
+      <view wx:if="{{ zeroOk != 'yes' }}" class='zero-h4'>赞，ta的好友已经助力帮ta获得<text>{{order.promotions.helps.total_help_amount}}元</text>，继续努力！</view>
+      <view wx:else class='zero-h4'>赞，ta的好友已经助力帮ta获得<text>{{order.promotions_offsetprice}}元</text>，完成目标。</view>
+
+      <button disabled="{{ zeroOk == 'yes' }}" bindtap='onToZero' class='zero-btn flex-x-center flex-y-center'>{{ zeroOk != 'yes' ?  '给ta助力' : '已完成'}}</button>
+    </block>
+    <block wx:else>
+
+      <view wx:if="{{ zeroOk != 'yes'  }}" class='zero-h4'>赞，您的好友已经助力帮您获得<text>{{order.promotions.helps.total_help_amount}}元</text>，继续努力！</view>
+    <view wx:else class='zero-h4'>赞，您的好友已经助力帮您获得<text>{{order.promotions_offsetprice}}元</text>，完成目标。</view>
+
+      
+      <block wx:if="{{ order.promotions_status==1 }}">
+        <button wx:if="{{ zeroOk != 'yes' }}" bindtap='onsharewxqrcode' class='zero-btn flex-x-center flex-y-center'>保存图片分享</button>
+        <button wx:else bindtap='onMyZero' class='zero-btn flex-x-center flex-y-center'>我要领取</button>
+      </block>
+      <button wx:else disabled="{{ zeroOk == 'yes' }}" class='zero-btn flex-x-center flex-y-center'>已领取</button>
+
+
+    </block>
+
+    <view class='zero-sm'>
+      <image class='icon-tig-lea' mode='widthFix' src="/image/icon-tig-lea.png"></image>
+      <image class='icon-lca' mode='widthFix' src="/image/icon-lca.png"></image>
+    </view>
+
+    <view class='flex-y-center zero-list' wx:for="{{ order.promotions && order.promotions.helps && order.promotions.helps.data }}" wx:key="{{index}}">
+      <view class='flex-y-center'>
+        <image class='zero-list-img' src="{{ item.head_pic }}"></image>
+        {{item.nick_name}} 帮ta助力0元购，减免了{{ item.help_amount }}元
+        
+      </view>
+      <text>{{ item.help_time}}</text>
+    </view>
+    
+    <view class='bottom-hei'></view>
+  </view> 
+
+  <button open-type="share" class="zero-my-btn flex-x-center flex-y-center">
+      分享给好友
+  </button>
+ 
+</view>
+
+<black wx:if="{{ okShow }}">
+  <view class='zero-bba'></view>
+  <view class='zero-bba-box'>
+    <view bindtap='onOkShow' class='zero-bba-x'></view>
+    <image src="/image/sh-ok.png" style="width: 630rpx;height: 720rpx"></image>
+    <view class='zero-bba-dt'>
+      <view class='zero-bba-pr'>{{zeroZl}}元</view>
+      <view class='zero-bba-t'>你帮助好友{{order.name}}达成{{zeroZl}}元</view>
+      <view bindtap='onOkShow' class='zero-bba-btn'>我知道了</view>
+    </view>
+    
+  </view>
+</black>
+
+<navigator class="return-index-btn" open-type="switchTab" wx:if="{{show_index}}" url="/pages/index/index">
+  <image src="/image/12s.png" style="width: 52rpx;height: 52rpx"></image>
+</navigator>

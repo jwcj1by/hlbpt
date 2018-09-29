@@ -1,0 +1,57 @@
+.adr-add {
+  background-color: #fff;
+  height: 98rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 32rpx;
+  width: 750rpx;
+  position: fixed;
+  bottom: 0;
+  z-index: 22;
+  color: #e71a41;
+}
+
+.adr-text {
+  width: 750rpx;
+  margin: 20rpx auto;
+  background-color: #fff;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20rpx 0;
+  font-size: 26rpx;
+  position: relative;
+}
+.icon-right::after {
+  top:50%;
+  margin-top:-10rpx;
+}
+.adr-r {
+  width: 560rpx;
+  display: flex;
+  flex-direction: column;
+  margin-right: 40rpx;
+}
+.adr-r-a {
+  color: #999;
+  margin: 10rpx 0;
+}
+.adr-l {
+  width: 180rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  flex-direction: column;
+}
+.adr-on{
+  border:1px solid #e71a41;
+  color: #e71a41;
+  border-radius: 20rpx;
+  width: 90rpx;
+  height: 36rpx;
+  font-size: 24rpx;
+  text-align: center;
+  margin-top: 6rpx;
+}

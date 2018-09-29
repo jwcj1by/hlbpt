@@ -1,0 +1,29 @@
+
+
+    <view wx:if="{{address_list.length==0}}" style="color: #888;text-align: center;padding: 32rpx 0;">
+      暂无收货地址
+    </view>
+
+    <block wx:else>
+      <view class='adr-text' bindtap="pickAddress" data-index="{{index}}" wx:for="{{address_list}}">
+        <view class='adr-l'>
+          <view>{{item.name}}</view>
+          <view class='adr-on' wx:if="{{ item.is_default == 1}}">默认</view>
+        </view>
+        <view class='adr-r'>
+          <view>{{item.mobile}}</view>
+          <view class='adr-r-a'>{{item.address}}</view>
+        </view>
+      </view>
+    </block>
+
+  <!-- <view class="flex-row">
+        <view class="flex-grow-1 px-24">
+            <navigator class="btn btn-red" url="/pages/address-edit/address-edit">手动添加地址</navigator>
+        </view>
+        <view class="flex-grow-1 px-24">
+            <button class="btn btn-green" bindtap="getWechatAddress">一键获取地址</button>
+        </view>
+    </view> -->
+
+<navigator class='adr-add' url="/pages/address-edit/address-edit">新建地址</navigator>

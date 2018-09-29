@@ -1,0 +1,36 @@
+<!--pages/address/address.wxml-->
+
+
+
+<view wx:if="{{show_no_data_tip}}" class="no-data-tip">暂无收货地址</view>
+
+<block wx:for="{{address_list}}">
+
+  <navigator class='adr-text icon-right' url="/pages/address-edit/address-edit?id={{item.id}}">
+    <view class='adr-l'>
+      <view>{{item.name}}</view>
+      <view class='adr-on' wx:if="{{ item.is_default == 1}}">默认</view>
+    </view>
+    <view class='adr-r'>
+      <view>{{item.mobile}}</view>
+      <view class='adr-r-a'>{{item.address}}</view>
+    </view>
+  </navigator>
+
+  <!-- <view class='flex-grow-0 flex-y-center adr-btn'>
+    <view bindtap="setDefaultAddress" data-index="{{index}}" class="flex-grow-0 flex-y-center">
+      <view class="cart-checkbox {{item.is_default==1 ? 'active':''}}" style="margin-right: 10rpx"></view>
+      <text style="white-space: nowrap">{{item.is_default==1 ?'默认地址':'设为默认'}}</text>
+    </view>
+
+    <view class='c-btn'>
+      <navigator class="address-option flex-y-center" url="/pages/address-edit/address-edit?id={{item.id}}">编辑</navigator>
+      <navigator bindtap="deleteAddress" class="address-option flex-y-center" data-index="{{index}}" data-id="{{item.id}}">删除</navigator>
+    </view>
+
+  </view> -->
+
+
+</block>
+
+<navigator class='adr-add' url="/pages/address-edit/address-edit">新建地址</navigator>

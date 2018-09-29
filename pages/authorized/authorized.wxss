@@ -1,0 +1,11 @@
+/* pages/authorized/authorized.wxss */
+
+.authorized_btn{
+  margin-left: 40rpx;
+  margin-right: 40rpx;
+  margin-top: 80rpx;
+  height: 100rpx;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+}

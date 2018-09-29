@@ -1,0 +1,47 @@
+<view class="main">
+
+  <view class='zero-p'>
+    <view class='h-list'>
+      <view class='h-item-two'>
+        <view class='h-view'>
+          <view class='h-title'>{{ order.group_buy.goods_name }}</view>
+          <text>{{ order.group_buy && order.group_buy.attr }}</text>
+          <view class='h-bt'>
+            <text class='h-jr'>¥{{order.total_price}}</text>
+            <!-- <text class='h-yj'>¥{{ item.old_price }}</text> -->
+          </view>
+        </view>
+        <view class='p-img-two'><image class='p-img-w' mode="widthFix" src="{{ order.group_buy.goods_image }}" /></view>
+      </view>
+    </view>
+  </view>
+
+  <import src="../template/zp-sm.wxml"/>
+  <template is="iconbz"/>
+
+  <view class='flex-col flex-y-center zero-box'>
+    <view class='zero-h4' wx:if="{{ order.groupbuy_status == 1 && order.is_pay == 1}}">还差<text>1人</text>拼成,剩余时间  {{clock}}</view>
+    <view class='flex-row zero-tan-user'>
+      <image wx:for="{{ order.group_buy.groupbuy_user_images }}" class='zero-user-img' src="{{item}}" wx:key="{{index}}"></image>
+    </view>
+
+    <button wx:if="{{order.groupbuy_status==2 && order.is_pay==1}}" disabled class='zero-btn flex-x-center flex-y-center' >拼团成功</button>
+    <block wx:else>
+      <button open-type="share" class='zero-btn flex-x-center flex-y-center' wx:if="{{order.group_buy.user_status == 'myself'}}">
+        分享给好友
+      </button>
+      <button wx:else class='zero-btn flex-x-center flex-y-center' bindtap='onCtan'>我要参团</button>
+    </block>
+    
+  </view> 
+
+  <view class='zero-sm'>
+    <image class='icon-tig-lea' mode='widthFix' src="/image/icon-tig-le.png"></image>
+    <image class='icon-lca' mode='widthFix' src="/image/icon-lc.png"></image>
+  </view>
+
+</view>
+
+<navigator class="return-index-btn" open-type="switchTab" wx:if="{{show_index}}" url="/pages/index/index">
+  <image src="/image/12s.png" style="width: 52rpx;height: 52rpx"></image>
+</navigator>

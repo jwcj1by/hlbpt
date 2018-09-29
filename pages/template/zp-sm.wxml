@@ -1,0 +1,7 @@
+<template name="iconbz">
+  <view class='icon-bz'>
+    <view><image class='icon-bz-img' src="/image/icon-bz.png"></image>正品保障</view>
+    <view><image class='icon-bz-img' src="/image/icon-bz.png"></image>官方授权</view>
+    <view><image class='icon-bz-img' src="/image/icon-bz.png"></image>假一赔十</view>
+  </view>
+</template>

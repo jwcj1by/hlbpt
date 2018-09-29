@@ -1,0 +1,134 @@
+page{
+    background-color: #f5f5f5;
+}
+.zero-tan-user {
+  width: 260rpx;
+  justify-content: space-around;
+  margin-top:20rpx;
+}
+
+.zero-p {
+  width: 750rpx;
+  height: 210rpx;
+  overflow: hidden;
+  position: relative;
+  background-color: #fff;
+  margin:20rpx 0 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.h-item-two .h-view {
+  width: 520rpx;
+  height: 156rpx;
+  position: absolute;
+  top: 26rpx;
+  right: 20rpx;
+  z-index: 3;
+  color: #999;
+}
+.h-item-two .h-title {
+  font-size: 28rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin-bottom: 10rpx;
+  color: #666;
+}
+
+.h-item-two .h-jr {
+  color: #e71a41;
+  margin: 0 20rpx 0 0;
+}
+
+.h-item-two .h-yj {
+  text-decoration:line-through;
+}
+.h-item-two .h-bt {
+  position: absolute;
+  bottom: 0;
+}
+
+.h-item-two .h-btn {
+  color: #fff;
+  background-color: #e71a41;
+  font-size: 28rpx;
+  width: 180rpx;
+  height: 64rpx;
+  margin:0 16rpx 0 0;
+  line-height: 64rpx;
+}
+.p-img-two {
+  width: 152rpx;
+  height: 152rpx;
+  position: absolute;
+  top:30rpx;
+  left: 30rpx;
+  overflow: hidden;
+  border-radius: 8rpx;
+}
+
+.p-img-two .p-img-w {
+  width: 152rpx;
+  height: 152rpx;
+}
+
+.zero-user-img {
+  width: 98rpx;
+  height: 98rpx;
+  border-radius:666rpx;
+  border:6rpx solid rgba(255, 255, 255, 0.6);
+}
+.zero-box{
+  background-color: #fff;
+  margin: 20rpx 0;
+}
+
+.zero-h4{
+  font-size: 26rpx;
+  color: #333;
+  margin: 20rpx 0 0;
+}
+.zero-h4 text {
+  color: #e71a41;
+}
+.zero-btn {
+  width: 640rpx;
+  height: 100rpx;
+  color: #fff;
+  background-color: #e71a41;
+  border-radius: 8rpx;
+  font-size: 32rpx;
+  margin: 40rpx 0 30rpx;
+}
+
+.zero-sm{
+  width: 750rpx;
+  height: 214rpx;
+  background-color: #fff;
+  position: relative;
+}
+.icon-tig-lea{
+  width: 140rpx;
+  height: 40rpx;
+  position: absolute;
+  top: 0;
+  left: 30rpx;
+}
+.icon-lca{
+  width: 585rpx;
+  height: 125rpx;
+  position: absolute;
+  bottom: 20rpx;
+  left: 80rpx;
+}
+
+.return-index-btn {
+  position: fixed;
+  right: 0;
+  bottom: 200rpx;
+  display: inline-block;
+  background: rgba(157, 157, 157, 0.5);
+  padding: 10rpx 20rpx;
+  z-index: 1000;
+  border-radius: 10rpx 0 0 10rpx;
+}

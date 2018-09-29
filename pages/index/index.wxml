@@ -1,0 +1,95 @@
+<view class="main">
+	<!-- 分类导航 -->
+	<scroll-view class='top-tab' scroll-x="true">
+		<block wx:if="{{ nav_category.length > 0 }}">
+			<view
+			      data-id="0"
+			      wx:key="0"
+			      class="tab-li {{active_nav == 0 ? 'tab-on' : ''}}"
+			      bindtap="onNavClick">
+				推荐
+			</view>
+			<view
+			      wx:for="{{ nav_category }}"
+			      wx:for-index="nav_idx"
+			      bindtap="onNavClick"
+			      wx:for-item="nav_item"
+			      wx:key="{{nav_idx + 1}}"
+			      data-id="{{nav_item.id}}"
+			      class="tab-li {{active_nav == nav_idx + 1 ? 'tab-on' : ''}}">
+				{{nav_item.name}}
+			</view>
+		</block>
+	</scroll-view>
+	<!-- 内容 -->
+	<scroll-view scroll-y="true">
+		<view class="content">
+			<!-- banner图 -->
+			<view class="swiper">
+				<swiper
+				        indicator-dots="{{indicatorDots}}"
+				        autoplay="{{autoplay}}"
+				        interval="{{interval}}"
+				        duration="{{duration}}">
+					<block
+					       wx:for="{{banner_adv}}"
+					       wx:for-index="banner_idx"
+					       wx:for-item="banner_item"
+					       wx:key="banner_idx">
+						<swiper-item>
+							<image src="{{banner_item.pic_url}}" class="slide-image" />
+						</swiper-item>
+					</block>
+				</swiper>
+			</view>
+			<!-- 商品列表 -->
+			<view class='v-good-list-container' wx:if="{{goods_list}}">
+				<view
+				      wx:for="{{goods_list}}"
+				      wx:for-index="g_idx"
+				      wx:for-item="g_item"
+				      class='v-good-list-item'
+				      wx:key="{{g_idx}}"
+				      hover-class=""
+				      bindtap="onGoodClick"
+				      data-msg="{{g_item}}">
+					<!-- 商品图片 -->
+					<view class='left'>
+						<image src="{{g_item.pic_url}}" />
+					</view>
+					<!-- 商品简略信息 -->
+					<view class='right'>
+						<!-- 商品名 -->
+						<view class='tit'>{{ g_item.name }}</view>
+						<!-- 介绍 -->
+						<view wx:if="{{g_item.desc}}" class='desc'>{{ g_item.desc }}</view>
+						<!-- 关联活动 -->
+						<view class='label'>
+							<block
+							       wx:for="{{g_item.services}}"
+							       wx:for-index="service_idx"
+							       wx:for-item="service_item"
+							       wx:key="{{service_idx}}">
+								<text>{{service_item}}</text>
+							</block>
+						</view>
+						<!-- 价格 -->
+						<view class='price'>
+							<text class='now'>￥{{ g_item.price }}</text>
+							<!-- <text class='old'>￥186</text> -->
+						</view>
+					</view>
+				</view>
+				<view class="weui-loadmore" hidden="{{!isLoading}}">
+					<view class="weui-loading" />
+					<view class="weui-loadmore__tips">正在加载</view>
+				</view>
+				<view class="nomore" hidden="{{!isReachLastPage}}">
+					<text>没有更多商品了</text>
+				</view>
+			</view>
+		</view>
+	</scroll-view>
+
+</view>
+
