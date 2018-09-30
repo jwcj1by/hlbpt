@@ -88,7 +88,6 @@ Page({
   },
   onToTan: function (e) {
     var page = this
-    console.log(e.currentTarget.dataset.v)
     var v = e.currentTarget.dataset.v
 
     wx.navigateTo({
@@ -349,8 +348,6 @@ Page({
         buy_type: buy_type
       }),
     });
-
-
   },
 
   hideAttrPicker: function () {

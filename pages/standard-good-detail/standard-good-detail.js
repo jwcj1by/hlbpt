@@ -114,7 +114,7 @@ Page({
     wx.showLoading({
       title: "正在加载",
       mask: true,
-    });
+    })
     app.request({
       url: api.default.goods,
       data: d,
@@ -165,10 +165,10 @@ Page({
         wx.hideLoading();
         wx.stopPullDownRefresh()
       }
-    });
+    })
   },
   getCommentList: function (more) {
-    var page = this;
+    var page = this
     if (more && page.data.tab_comment != "active")
       return;
     if (is_loading_comment)
@@ -199,8 +199,8 @@ Page({
     });
   },
   onGoodsImageClick: function (e) {
-    var page = this;
-    var urls = [];
+    var page = this
+    var urls = []
     var index = e.currentTarget.dataset.index;
     //console.log(page.data.goods.pic_list);
     for (var i in page.data.goods.pic_list) {
@@ -335,7 +335,7 @@ Page({
 
     let buy_type = '' // buy_type字段，1为普通购买，2为0元购，3为拼团
 
-    if (type == 'ADD_CART') {
+    if (type == 'ADD_CART') { // 添加购物车
       buy_type = 1
       this.commit_cart(checked_attr_list, page.data.form.number)
     }
@@ -352,19 +352,22 @@ Page({
     }
   },
   async commit_cart(attr, num) {
-    console.log(attr, num)
-    return
     let _this = this
+    let _attr_ids = []
+    attr.forEach((item) => {
+      _attr_ids.push({attr_id: item.attr_id})
+    })
     try {
       let res_add_cart = await app.fetch({
         url: api.cart.add_cart,
         method: 'POST',
         data: {
           goods_id: _this.data.id,
-          attr,
+          attr: JSON.stringify(_attr_ids),
           num
         }
       })
+
       // 将商品保存至本地
       let cart_info = wx.getStorageSync('cart_info') || []
       cart_info.push(this.data.goods)
@@ -387,7 +390,6 @@ Page({
       show_attr_picker: true,
     });
   },
-
   attrClick: function (e) {
     var page = this;
     var attr_group_id = e.target.dataset.groupId;
@@ -493,7 +495,6 @@ Page({
       }
     });
   },
-
   favoriteAdd: function () {
     var page = this;
     app.request({
@@ -513,7 +514,6 @@ Page({
       }
     });
   },
-
   favoriteRemove: function () {
     var page = this;
     app.request({
@@ -533,7 +533,6 @@ Page({
       }
     });
   },
-
   tabSwitch: function (e) {
     var page = this;
     var tab = e.currentTarget.dataset.tab;

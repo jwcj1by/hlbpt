@@ -19,7 +19,7 @@ Page({
     onLoad: function (options) {
         var page = this;
         page.setData({
-          store:wx.getStorageSync("store")
+            store: wx.getStorageSync("store")
         });
         wx.showLoading({
             title: "正在加载",

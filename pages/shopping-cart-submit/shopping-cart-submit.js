@@ -16,14 +16,13 @@ Page({
     name: "",
     mobile: ""
   },
-
   numberSub: function (e) {
     var page = this;
     var list = JSON.parse(page.data.options.goods_info)
     var num = list.num
     if (num <= 1)
-      return true;
-    list.num--;
+      return true
+    list.num--
     page.setData({
       options: {
         goods_info: JSON.stringify(list)
@@ -31,12 +30,11 @@ Page({
     });
     page.getOrderData(page.data.options)
   },
-
   numberAdd: function (e) {
     var page = this;
     var list = JSON.parse(page.data.options.goods_info)
     var num = list.num
-    list.num++;
+    list.num++
     page.setData({
       options: {
         goods_info: JSON.stringify(list)
@@ -61,7 +59,6 @@ Page({
     });
     page.getOrderData(page.data.options)
   },
-
   /**
    * 生命周期函数--监听页面加载
    */
@@ -71,22 +68,7 @@ Page({
       options,
       store: wx.getStorageSync("store"),
       goods_infos: JSON.parse(options.goods_info)
-    });
-  },
-  bindkeyinput: function (e) {
-    this.setData({
-      content: e.detail.value
-    });
-  },
-  KeyName: function (e) {
-    this.setData({
-      name: e.detail.value
-    });
-  },
-  KeyMobile: function (e) {
-    this.setData({
-      mobile: e.detail.value
-    });
+    })
   },
   getOffline: function (e) {
     var express = this.data.express_price;
@@ -491,6 +473,17 @@ Page({
         show_shop: false,
       });
     }
-  }
+  },
+  //
+  KeyName: function (e) {
+    this.setData({
+      name: e.detail.value
+    });
+  },
+  KeyMobile: function (e) {
+    this.setData({
+      mobile: e.detail.value
+    });
+  },
 
 });

@@ -53,6 +53,7 @@ var api = {
     list: _api_root + 'cart/list',
     add_cart: _api_root + 'cart/add-cart',
     delete: _api_root + 'cart/delete',
+    change_cart: _api_root + 'cart/change-cart'
   },
   passport: {
     login: _api_root + 'passport/login',

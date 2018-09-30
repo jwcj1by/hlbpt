@@ -20,7 +20,8 @@
     "pages/authorized/authorized",
     "pages/category/category",
     "pages/standard-good-detail/standard-good-detail",
-    "pages/shopping-cart/shopping-cart"
+    "pages/shopping-cart/shopping-cart",
+    "pages/shopping-cart-submit/shopping-cart-submit"
   ],
   "window": {
     "backgroundTextStyle": "dark",
@@ -34,8 +35,7 @@
     "selectedColor": "#e71a41",
     "borderStyle": "#eaebec",
     "backgroundColor": "#f7f7fa",
-    "list": [
-      {
+    "list": [{
         "pagePath": "pages/index/index",
         "iconPath": "image/icon1.png",
         "selectedIconPath": "image/icon1_selected.png",
