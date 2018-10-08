@@ -109,10 +109,10 @@ Page({
     this.totalPriceFactory()
   },
   settleAccounts() { // 去结算
-    // wx.showLoading({
-    //   title: "正在提交",
-    //   mask: true,
-    // })
+    wx.showLoading({
+      title: "正在提交",
+      mask: true,
+    })
     let data = {
         
     }

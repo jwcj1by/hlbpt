@@ -1,5 +1,5 @@
 // var _api_root = 'https://fireco.cppwork.com/api/';
-var _api_root = 'https://pt.lapp.honglaba.com/api/'
+// var _api_root = 'https://pt.lapp.honglaba.com/api/'
 var _api_root = 'http://honglaba.me:8080/api/'
 // 0元购首页：domain + /api/promotions/home
 // 爱拼团首页：domain + /api/group-buy/home

@@ -51,9 +51,9 @@ App({
     if (!wx.getStorageSync('access_token')) {
       this.login();
     }
-    return
-    this.getStoreData();
-    this.getCatList();
+    // return
+    // this.getStoreData();
+    // this.getCatList();
   },
   onShow: function (ops) {
     var slef = this

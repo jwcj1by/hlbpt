@@ -58,10 +58,9 @@ Page({
       options: {
         goods_info: JSON.stringify(list)
       },
-    });
+    })
     page.getOrderData(page.data.options)
   },
-
   /**
    * 生命周期函数--监听页面加载
    */
@@ -106,8 +105,8 @@ Page({
     }
   },
   orderSubmit: function () {
-    var page = this;
-    var offline = page.data.offline;
+    var page = this
+    var offline = page.data.offline
     var data = {};
     if (offline == 0) {
       if (!page.data.address || !page.data.address.id) {
