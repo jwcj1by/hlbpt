@@ -1,0 +1,124 @@
+.sc-opt {
+  box-sizing: border-box;
+  height: 80rpx;
+  padding: 20rpx 10rpx;
+}
+
+.sc-opt-btn {
+  float: right;
+}
+
+.sc-opt-btn-edit {
+  color: rgb(167, 134, 167);
+}
+
+.sc-opt-btn-complate {
+  color: rgb(159, 201, 147);
+}
+
+.sc-list {
+  /* background-color: #999; */
+}
+
+.sc-list-item {
+  height: 220rpx;
+  background-color: rgb(255, 255, 255);
+  margin: 0 0 20rpx 0;
+  display: flex;
+}
+
+/* 商品选择按钮 */
+.sc-list-item-radio-box {
+  margin: 0 0 0 10rpx;
+  flex: 1;
+  height: 100%;
+  position: relative;
+}
+
+.sc-list-item-radio {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30rpx;
+  height: 30rpx;
+  /* background-color: aqua; */
+  border-radius: 50%;
+  border: 1rpx solid rgb(110, 106, 106);
+}
+
+/* 商品图片 */
+.sc-list-item-pic-box {
+  flex: 3;
+  height: 100%;
+}
+
+.sc-list-item-pic {
+  width: 180rpx;
+  height: 180rpx;
+  margin: 50% 0 0 0;
+  transform: translateY(-50%);
+}
+
+/* 属性盒子 */
+.sc-list-item-attr-box {
+  flex: 9;
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx 10rpx 20rpx 20rpx;
+}
+
+.sc-list-item-attr-name {
+  flex: 2;
+}
+
+.sc-list-item-attr-list {
+  flex: 4;
+}
+
+.sc-list-item-attr-edit {
+  flex: 2;
+  /* background-color: azure; */
+}
+
+.sc-list-item-attr-edit-price {
+  float: left;
+  width: 20%;
+}
+
+.sc-list-item-attr-edit-num {
+  width: 30%;
+  float: right;
+  display: flex;
+  border-radius: 6rpx;
+  background-color: bisque;
+}
+
+.sc-list-item-attr-edit-num-add {
+  flex: 1;
+  padding: 10rpx;
+}
+
+.sc-list-item-attr-edit-num-content {
+  flex: 2;
+  margin: 0 10rpx;
+  text-align: center;
+}
+
+.sc-list-item-attr-edit-num-reduce {
+  flex: 1;
+  padding: 10rpx;
+}
+
+.sc-list-item-attr-edit-image {
+  width: 100%;
+  height: 100%;
+}
+
+/* 结算 */
+.sc-list-item-pic-account {
+  width: 100%;
+  height: 100rpx;
+  position: fixed;
+  bottom: 0;
+  background-color: rgb(255, 255, 255);
+}
