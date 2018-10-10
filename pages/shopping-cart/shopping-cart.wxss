@@ -1,7 +1,170 @@
-@import "/wxss/adr.wxss";
-page {
-  background-color: #f5f5f5;
-  color: #666;
+.sc-opt {
+  box-sizing: border-box;
+  height: 80rpx;
+  padding: 20rpx 10rpx;
+}
+
+.sc-opt-btn {
+  float: right;
+}
+
+.sc-opt-btn-edit-before {
+
+}
+
+/* 编辑 */
+.sc-opt-btn-edit-before { 
+  color: rgb(167, 134, 167);
+}
+
+.sc-opt-btn-edit-list {
+  display: flex;
+}
+
+.sc-opt-btn-tea {
+  flex: 1;
+  margin-left: 10rpx;
+}
+
+/* 删除 */
+.sc-opt-btn-del {
+  color: rgb(202, 88, 117);
+}
+
+/* 完成 */
+.sc-opt-btn-complate {
+  color: rgb(159, 201, 147);
+}
+
+.sc-list {
+  /* background-color: #999; */
+}
+
+.sc-list-item {
+  height: 220rpx;
+  background-color: rgb(255, 255, 255);
+  margin: 0 0 20rpx 0;
+  display: flex;
+}
+
+/* 商品选择按钮 */
+.sc-list-item-radio-box {
+  margin: 0 0 0 10rpx;
+  flex: 1;
+  height: 100%;
+  position: relative;
+}
+
+.sc-list-item-radio {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30rpx;
+  height: 30rpx;
+  /* background-color: aqua; */
+  border-radius: 50%;
+  border: 1rpx solid rgb(110, 106, 106);
+}
+
+.sc-list-item-radio-img {
+  width: 100%;
+  height: 100%;
+}
+
+/* 商品图片 */
+.sc-list-item-pic-box {
+  flex: 3;
+  height: 100%;
+}
+
+.sc-list-item-pic {
+  width: 180rpx;
+  height: 180rpx;
+  margin: 50% 0 0 0;
+  transform: translateY(-50%);
+}
+
+/* 属性盒子 */
+.sc-list-item-attr-box {
+  flex: 9;
+  display: flex;
+  flex-direction: column;
+  padding: 20rpx 10rpx 20rpx 20rpx;
+}
+
+
+
+.sc-list-item-attr-name {
+  flex: 2;
+}
+
+.sc-list-item-attr-list {
+  flex: 4;
+}
+
+.sc-list-item-attr-edit {
+  flex: 2;
+  /* background-color: azure; */
+}
+
+.sc-list-item-attr-edit-price {
+  float: left;
+  width: 20%;
+}
+
+.sc-list-item-attr-edit-num {
+  width: 40%;
+  float: right;
+  display: flex;
+  border-radius: 6rpx;
+  background-color: bisque;
+}
+
+.sc-list-item-attr-edit-num-add {
+  flex: 1;
+  padding: 10rpx;
+}
+
+.sc-list-item-attr-edit-num-content {
+  flex: 2;
+  margin: 0 10rpx;
+  text-align: center;
+}
+
+.sc-list-item-attr-edit-num-reduce {
+  flex: 1;
+  padding: 10rpx;
+}
+
+.sc-list-item-attr-edit-image {
+  width: 100%;
+  height: 100%;
+}
+
+/* 结算 */
+/* .sc-list-item-pic-account {
+  width: 100%;
+  height: 100rpx;
+  position: fixed;
+  bottom: 0;
+  background-color: rgb(255, 255, 255);
+} */
+
+.sc-list-item-pic-account-select_all {
+  width: 50rpx;
+  height: 100%;
+  position: relative;
+}
+
+.sc-list-item-pic-account-select_all-radio {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30rpx;
+  height: 30rpx;
+  border-radius: 50%;
+  border: 1rpx solid rgb(110, 106, 106);
 }
 
 .bottom-bar {
@@ -23,162 +186,4 @@ page {
   height: 100rpx;
   text-align: center;
   font-size: 32rpx;
-}
-
-.order-coupon {
-  width: 750rpx;
-  background: #fff;
-  height: 80rpx;
-  font-size: 26rpx;
-  border-radius: 8rpx; 
-}
-
-.order-coupon .o-ml {
-  margin: 0 26rpx;
-  display: flex;
-  align-items: center;
-}
-
-.order-coupon input {
-  padding: 10rpx 0;
-}
-
-.address-picker {
-  background: #fff;
-  margin: 20rpx 0;
-  position: relative;
-}
-
-.cart-list {
-  width: 750rpx;
-  margin: 20rpx auto;
-}
-
-.cart-item {
-  background: #fff;
-  padding: 32rpx 24rpx;
-  border-radius: 8rpx;
-  overflow: hidden;
-  margin-bottom: 20rpx;
-}
-
-.cart-item .goods-pic {
-  width: 152rpx;
-  height: 152rpx;
-  margin-right: 20rpx;
-}
-
-
-.cart-item .goods-name {
-  margin-bottom: 10rpx;
-  -webkit-line-clamp: 1;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  font-size: 26rpx;
-}
-
-.cart-item .attr-list, .cart-item .num {
-  font-size: 9pt;
-  color: #888;
-}
-
-.cart-item .attr-list .attr-item {
-  display: inline-block;
-  margin-right: 36rpx;
-}
-
-.cart-item .attr-list .attr-item:last-child {
-  margin-right: 0;
-}
-
-.cart-item .price {
-  color: #ff4544;
-  margin: 10rpx 0 0;
-}
-.number-input-box {
-  height: 60rpx;
-}
-.attr-num {
-  margin-top:20rpx;
-  align-items: flex-end;
-}
-.number-input-box .number-input {
-  height: 60rpx !important;
-  border: 1px solid #dbdbdb;
-  text-align: center;
-  width: 100rpx;
-  border-left:none;
-  border-right: none;
-  font-size: 12px;
-}
-
-.number-input-box .number-btn {
-  height: 100% !important;
-  width: 60rpx;
-  border: 1px solid #dbdbdb;
-  color: #666;
-}
-
-.number-input-box .number-btn.disabled {
-  background: #f6f6f6;
-  color: #aaa;
-}
-.coupon-picker {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1001;
-  background: #fff;
-  border-top: 1rpx solid #e3e3e3;
-}
-
-.coupon-list {
-  padding: 34rpx;
-}
-
-.coupon-list .coupon-item {
-  height: 152rpx;
-  width: 682rpx;
-  position: relative;
-  margin-bottom: 24rpx;
-}
-
-.coupon-list .coupon-item.coupon-status-1 .coupon-right,
-.coupon-list .coupon-item.coupon-status-2 .coupon-right {
-  color: rgba(0, 0, 0, 0.35) !important;
-}
-
-.coupon-list .coupon-item .coupon-bg {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
-
-.coupon-list .coupon-item .coupon-status-icon {
-  width: 140rpx;
-  height: 98rpx;
-  position: absolute;
-  top: 0;
-  right: 8rpx;
-  z-index: 1;
-}
-
-.coupon-list .coupon-item .coupon-left {
-  color: #fff;
-  width: 202rpx;
-}
-
-.coupon-list .coupon-item .coupon-right {
-  padding: 20rpx 10rpx;
-}
-
-.active {
-  border-bottom: 4rpx #ff4544 solid;
-  color: #ff4544;
 }

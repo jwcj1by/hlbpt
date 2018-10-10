@@ -1,0 +1,83 @@
+<!-- shopping-cart.wxml -->
+<view class="cart-list">
+	<block wx:if="{{    cart_list.length > 0    }}">
+		<view
+		      class="cart-item flex-row"
+		      wx:for="{{    cart_list    }}"
+		      wx:for-index="cartIdx"
+		      wx:for-item="cartItem"
+		      wx:key="{{    cartIdx    }}">
+			<!-- 商品图片 -->
+			<view class="flex-grow-0">
+				<image class="goods-pic" mode="aspectFill" src="{{    cartItem.goods_pic    }}" />
+			</view>
+			<view class="flex-grow-1 flex-col">
+				<view class="flex-grow-1">
+					<!-- 商品名 -->
+					<view class="goods-name">{{cartItem.goods_name}}</view>
+					<!-- 属性列表 -->
+					<view class="attr-list">
+						<block wx:if="{{  cartItem.attr_list.length > 0   }}">
+							<view
+							      class="attr-item"
+							      wx:for="{{    cartItem.attr_list    }}"
+							      wx:for-item="attr_item"
+							      wx:key="{{     index     }}">
+								{{attr_item.attr_group_name}}:{{attr_item.attr_name}}
+							</view>
+						</block>
+					</view>
+					<!-- 数量控制器 -->
+					<view class='flex-row flex-spa attr-num'>
+						<view class="flex-grow-0 price">￥{{cartItem.unit_price}}</view>
+						<view class="flex-row number-input-box">
+							<view class="flex-grow-0 flex-x-center flex-y-center number-btn number-sub {{    cartItem.num.number<=1    ?    'disabled'    :    ''    }}" data-id="{{    cartIdx    }}" bindtap="numberSub">
+								-
+							</view>
+							<view class="flex-grow-0">
+								<input
+								       class="flex-grow-1 number-input"
+								       value="{{    cartItem.num    }}"
+								       type="number"
+								       step="1"
+								       min="1"
+								       bindblur="numberBlur"
+								       data-id="{{    cartIdx    }}" />
+							</view>
+							<view data-id="{{    cartIdx    }}" class="flex-grow-0 flex-x-center flex-y-center number-btn number-add" bindtap="numberAdd">
+								+
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
+	</block>
+</view>
+<!-- <view class="flex-row order-coupon">
+  <view class="flex-grow-0 o-ml">
+    <block wx:if="{{address}}">
+      <view>￥{{express_price}}</view>
+    </block>
+    <block wx:elif="{{offline==1}}">
+      <view>￥0.00</view>
+    </block>
+  </view>
+</view> -->
+<view style='height    :    100rpx;' />
+<!-- 底部结算按钮 -->
+<view class="bottom-bar flex-row">
+	<view class="flex-y-center flex-grow-1" style="padding    :     0 24rpx">
+		应付金额:
+		<view class="flex-grow-1" style="color    :    #ff4544 ">
+			￥
+			<block>
+				<block>{{total_price}}</block>
+			</block>
+		</view>
+	</view>
+	<view class="flex-y-center flex-grow-0 flex-x-center submit-btn" bindtap="settleAccounts">
+		去结算
+	</view>
+</view>
+
