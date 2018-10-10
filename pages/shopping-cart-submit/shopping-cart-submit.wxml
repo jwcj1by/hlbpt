@@ -1,5 +1,6 @@
 <!-- order-submit.wxml -->
-<navigator wx:if='{{ offline==0 }}' url="/pages/address-picker/address-picker" class='adr-text icon-right'>
+<navigator url="/pages/address-picker/address-picker" class='adr-text icon-right'>
+	<!-- 地址 -->
 	<block wx:if="{{ address }}">
 		<image src="/image/car-border-top.png" style="width : 750rpx;height :  10rpx; position : absolute;top : 0;left : 0;" />
 		<view class='adr-l'>
@@ -17,50 +18,24 @@
 		<view class="flex-grow-1 flex-y-center flex-x-center">请选择收货地址</view>
 	</block>
 </navigator>
-<view class="cart-list">
-	<view class="cart-item flex-row" wx:for="{{ goods_list }}" wx:key="{{  index  }}">
-		<view class="flex-grow-0">
-			<image class="goods-pic" mode="aspectFill" src="{{ item.goods_pic }}" />
-		</view>
-		<view class="flex-grow-1 flex-col">
-			<view class="flex-grow-1">
-				<view class="goods-name">{{item.goods_name}}</view>
-				<view class="attr-list">
-					<view
-					      class="attr-item"
-					      wx:for="{{ item.attr_list }}"
-					      wx:for-item="attr"
-					      wx:key="{{  index  }}">
-						{{attr.attr_group_name}}:{{attr.attr_name}}
-					</view>
-				</view>
-				<view class='flex-row flex-spa attr-num'>
-					<view class="flex-grow-0 price">￥{{item.price}}</view>
-					<view class="flex-row number-input-box" wx:if="{{ goods_infos.buy_type != 2 }}">
-						<view class="flex-grow-0 flex-x-center flex-y-center number-btn number-sub {{ form.number<=1 ? 'disabled' : '' }}" id="{{ index }}" bindtap="numberSub">
-							-
-						</view>
-						<view class="flex-grow-0">
-							<input
-							       class="flex-grow-1 number-input"
-							       value="{{ item.num }}"
-							       type="number"
-							       step="1"
-							       min="1"
-							       bindblur="numberBlur"
-							       id="{{ index }}" />
-						</view>
-						<view id="{{ index }}" class="flex-grow-0 flex-x-center flex-y-center number-btn number-add" bindtap="numberAdd">
-							+
-						</view>
-					</view>
-				</view>
-			</view>
-		</view>
+<!-- 商品图片预览 -->
+<view class="goods-preview">
+	<view class="goods-priview-photos">
+		<image
+		       wx:for="{{ goods_list }}"
+		       wx:for-index="index"
+		       wx:for-item="item"
+		       wx:key="{{ index }}"
+		       class="goods-priview-photos-item"
+		       src="{{item.goods_pic}}" />
+	</view>
+	<view class="goods-priview-loadmore">
+		<text class="goods-priview-loadmore-num">共{{ goods_list.length }}件</text>
 	</view>
 </view>
-<!-- </view> -->
-<view class="flex-row order-coupon">
+
+<!-- 各项费用 -->
+<view class="flex-row order-coupon goods-other-money">
 	<view class="flex-grow-1 o-ml">运费：</view>
 	<view class="flex-grow-0 o-ml">
 		<block wx:if="{{ address }}">
@@ -74,7 +49,6 @@
 		</block>
 	</view>
 </view>
-
 <view style='height : 100rpx;' />
 <!-- <view class="coupon-picker" wx:if="{{show_coupon_picker}}">
   <scroll-view class="coupon-list" scroll-y="true" style="height: 100%">
@@ -132,21 +106,12 @@
   </scroll-view>
 </view> -->
 <!-- 选择自提地址  结束 -->
-
 <view class="bottom-bar flex-row">
 	<view class="flex-y-center flex-grow-1" style="padding :  0 24rpx">
 		应付金额:
 		<view class="flex-grow-1" style="color : #ff4544 ">
 			￥
-			<block wx:if="{{ picker_coupon }}">
-				<block wx:if="{{ total_price-picker_coupon.sub_price<0.01 }}">
-					{{ (0.01+express_price) ? 0.01+express_price : '' }}
-				</block>
-				<block wx:else>
-					{{ (new_total_price+express_price) ? new_total_price+express_price : '' }}
-				</block>
-			</block>
-			<block wx:else>{{ total_price_1+express_price }}</block>
+			<block>{{ total_price }}</block>
 		</view>
 	</view>
 	<view class="flex-y-center flex-grow-0 flex-x-center submit-btn" bindtap="orderSubmit">付款</view>

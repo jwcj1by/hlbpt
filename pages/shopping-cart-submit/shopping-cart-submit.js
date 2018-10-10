@@ -1,15 +1,20 @@
 // order-submit.js
 var api = require('../../api.js');
-var app = getApp();
-Page({
 
+var app = getApp();
+import regeneratorRuntime from '../../libs/regenerator-runtime/runtime' // 支持async await
+import { STORE_ID_SET } from '../../utils/status'
+Page({
   /**
    * 页面的初始数据
    */
   data: {
-    total_price: 0,
-    address: null,
-    express_price: 0.00,
+    address: null, // 地址
+    priview_data: {},
+    goods_list: [],
+    total_price: 0, // 总价
+    express_price: 0, // 运费
+    cart_id_list: [],
     content: '',
     offline: 0,
     express_price_1: 0.00,
@@ -42,7 +47,6 @@ Page({
     });
     page.getOrderData(page.data.options)
   },
-
   numberBlur: function (e) {
     var page = this;
     var num = e.detail.value;
@@ -62,12 +66,25 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-    var page = this;
-    page.setData({
-      options,
-      store: wx.getStorageSync("store"),
-      goods_infos: JSON.parse(options.goods_info)
+  async onLoad(options) {
+    let _options = options
+    let data = {
+      cart_id_list: _options.cart_id_list,
+      // address_id: 1,
+      buy_type: 1
+    }
+    const RES = await app.fetch({
+      url: api.order.submit_preview,
+      // method: 'POST',
+      data
+    })
+    this.setData({
+      address: RES.address,
+      priview_data: RES,
+      goods_list: RES.list,
+      total_price: RES.total_price,
+      express_price: RES.express_price,
+      cart_id_list: RES.cart_id_list
     })
   },
   getOffline: function (e) {
@@ -84,179 +101,33 @@ Page({
       this.setData({
         offline: offline,
         express_price: express_1
-      });
+      })
     }
   },
-  orderSubmit: function () {
-    var page = this;
-    var offline = page.data.offline;
-    var data = {};
-    if (offline == 0) {
-      if (!page.data.address || !page.data.address.id) {
-        wx.showToast({
-          title: "请选择收货地址",
-          image: "/image/icon-warning.png",
-        });
-        return;
-      }
-      data.address_id = page.data.address.id;
-    } else {
-      data.address_name = page.data.name;
-      data.address_mobile = page.data.mobile;
-      if (page.data.shop.id)
-        data.shop_id = page.data.shop.id;
-    }
-    data.offline = offline;
-    if (page.data.cart_id_list) {
-      data.cart_id_list = JSON.stringify(page.data.cart_id_list);
-    }
-    if (page.data.goods_info) {
-      data.goods_info = JSON.stringify(page.data.goods_info);
-      data.buy_type = page.data.goods_info.buy_type
-    }
-    if (page.data.picker_coupon) {
-      data.user_coupon_id = page.data.picker_coupon.user_coupon_id;
-    }
-    if (page.data.content) {
-      data.content = page.data.content
-    }
-    if (page.data.goods_info && page.data.goods_info.user_type == 1) {
-      data.user_type = 1
-      data.groupbuy_user_id = page.data.goods_info.groupbuy_user_id
-      data.order_id = page.data.goods_info.order_id || ''
-    }
+  async orderSubmit () {
+    let _cart_id_list = this.data.cart_id_list
     wx.showLoading({
       title: "正在提交",
       mask: true,
     });
-
     //提交订单
-    app.request({
-      url: api.order.submit,
-      method: "post",
-      data: data,
-      success: function (res) {
-        if (res.code == 0) {
-          setTimeout(function () {
-            wx.hideLoading();
-          }, 1000);
-          setTimeout(function () {
-            page.setData({
-              options: {},
-            });
-          }, 1);
-          var order_id = res.data.order_id;
-
-          if (page.data.goods_info.buy_type == 2) {
-            wx.reLaunch({
-              url: '/pages/zeroyuan/zeroyuan?id=' + order_id
-            });
-            return
-          }
-          //获取支付数据
-          app.request({
-            url: api.order.pay_data,
-            data: {
-              store_id: 1,
-              order_id: order_id,
-              pay_type: 'WECHAT_PAY',
-            },
-            success: function (res) {
-              if (res.code == 0) {
-                //发起支付
-                wx.requestPayment({
-                  timeStamp: res.data.timeStamp,
-                  nonceStr: res.data.nonceStr,
-                  package: res.data.package,
-                  signType: res.data.signType,
-                  paySign: res.data.paySign,
-                  success: function (e) {
-
-                    if (page.data.goods_info.buy_type == 3) {
-                      wx.reLaunch({
-                        url: '/pages/tan-detail/tan-detail?id=' + order_id
-                      });
-                      return
-                    }
-
-                    if (page.data.goods_info.buy_type == 2) {
-                      wx.reLaunch({
-                        url: '/pages/zeroyuan/zeroyuan?id=' + order_id
-                      });
-                      return
-                    }
-
-                    wx.redirectTo({
-                      url: "/pages/order/order?status=1",
-                    });
-                  },
-                  fail: function (e) {},
-                  complete: function (e) {
-                    if (e.errMsg == "requestPayment:fail" || e.errMsg == "requestPayment:fail cancel") { //支付失败转到待支付订单列表
-                      wx.showModal({
-                        title: "提示",
-                        content: "订单尚未支付",
-                        showCancel: false,
-                        confirmText: "确认",
-                        success: function (res) {
-                          if (res.confirm) {
-                            wx.redirectTo({
-                              url: "/pages/order/order?status=0",
-                            });
-                          }
-                        }
-                      });
-                      return;
-                    }
-                    if (e.errMsg == "requestPayment:ok") {
-                      return;
-                    }
-                    wx.redirectTo({
-                      url: "/pages/order/order?status=-1",
-                    });
-                  },
-                });
-                return;
-              }
-              if (res.code == 1) {
-                wx.showToast({
-                  title: res.msg,
-                  image: "/image/icon-warning.png",
-                });
-                return;
-              }
-            }
-          });
+    try {
+      const RES = await app.fetch({
+        url: api.order.submit,
+        method: 'POST',
+        data: {
+          address_id: this.data.address.id,
+          offline: 0,
+          cart_id_list: JSON.stringify(_cart_id_list),
+          buy_type: STORE_ID_SET.FIRST
         }
-        if (res.code == 1) {
-          wx.hideLoading();
-          wx.showToast({
-            title: res.msg,
-            image: "/image/icon-warning.png",
-          });
-          return;
-        }
-      }
-    })
-  },
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    var page = this;
-    var address = wx.getStorageSync("picker_address");
-    if (address) {
-      page.setData({
-        address: address,
-        name: address.name,
-        mobile: address.mobile
-      });
-      wx.removeStorageSync("picker_address");
+      })
+    } catch (error) {
+      console.error(error)
     }
-    page.getOrderData(page.data.options);
+   
   },
   getOrderData: function (options) {
-
     var page = this;
     var address_id = "";
     if (page.data.address && page.data.address.id)
@@ -266,7 +137,7 @@ Page({
       wx.showLoading({
         title: "正在加载",
         mask: true,
-      });
+      })
       app.request({
         url: api.order.submit_preview,
         data: {
@@ -415,7 +286,6 @@ Page({
       },
     });
   },
-
   showCouponPicker: function () {
     var page = this;
     if (page.data.coupon_list && page.data.coupon_list.length > 0) {
@@ -424,7 +294,6 @@ Page({
       });
     }
   },
-
   pickCoupon: function (e) {
     var page = this;
     var index = e.currentTarget.dataset.index;
@@ -445,7 +314,6 @@ Page({
       });
     }
   },
-
   numSub: function (num1, num2, length) {
     return 100;
   },
@@ -472,7 +340,6 @@ Page({
       });
     }
   },
-  //
   KeyName: function (e) {
     this.setData({
       name: e.detail.value
