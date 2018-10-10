@@ -1,67 +1,94 @@
 <view class="sc-container">
-		<!-- 选项 -->
-		<view class="sc-opt">
-				<view class="sc-opt-btn">
-						<view class="sc-opt-btn-edit-before" wx:if="{{ !editing }}" bind:tap="editCart">
-								<text class="sc-opt-btn-edit">编辑</text>
-						</view>
-						<view class="sc-opt-btn-edit-list" wx:if="{{ editing }}">
-								<text class="sc-opt-btn-del sc-opt-btn-tea"  bind:tap="editDel">删除</text>
-								<text class="sc-opt-btn-complate sc-opt-btn-tea" bind:tap="editComplate">完成</text>
-						</view>
-				</view>
+	<!-- 选项 -->
+	<view class="sc-opt">
+		<view class="sc-opt-btn">
+			<view class="sc-opt-btn-edit-before" wx:if="{{ !editing }}" bind:tap="editCart">
+				<text class="sc-opt-btn-edit">编辑</text>
+			</view>
+			<view class="sc-opt-btn-edit-list" wx:if="{{ editing }}">
+				<text class="sc-opt-btn-del sc-opt-btn-tea"  bind:tap="editDel">删除</text>
+				<text class="sc-opt-btn-complate sc-opt-btn-tea" bind:tap="editComplate">完成</text>
+			</view>
 		</view>
-		<!-- 列表 -->
-		<view class="sc-list" wx:if="{{cart_list.length}}">
-				<!-- 每个商品 -->
-				<view class="sc-list-item" wx:for="{{ cart_list }}" wx:for-index="index" wx:for-item="item" wx:key="index">
-						<!-- 单选按钮 -->
-						<view class="sc-list-item-radio-box">
-								<view class="sc-list-item-radio" data-id="{{index}}" bind:tap="selectEle" style="background-color: {{ item.isChecked ? 'red' : '#FFF'}}" />
-						</view>
-						<!-- 图片 -->
-						<view class="sc-list-item-pic-box">
-								<image mode="aspectFit" class="sc-list-item-pic" src="{{item.goods_pic}}" lazy-load="true" />
-						</view>
-						<!-- 属性 -->
-						<view class="sc-list-item-attr-box">
-								<view class="sc-list-item-attr-name">
-										<text>{{item.goods_name}}</text>
-								</view>
-								<view class="sc-list-item-attr-list">属性列表</view>
-								<view class="sc-list-item-attr-edit">
-										<!-- 价格 -->
-										<view class="sc-list-item-attr-edit-price">价格</view>
-										<!-- 数量修改 -->
-										<view class="sc-list-item-attr-edit-num">
-												<view class="sc-list-item-attr-edit-num-reduce" data-id="{{ index }}" bind:tap="reduceEleNum">
-														<image class="sc-list-item-attr-edit-image" src="../../image/-.png" mode="aspectFit" data-index="{{index}}" />
-												</view>
-												<input class="sc-list-item-attr-edit-num-content" data-id="{{index}}" bind:blur="numberBlur" type="number" value="{{item.num}}" />
-												<view class="sc-list-item-attr-edit-num-add" data-id="{{ index }}" bind:tap="addEleNum">
-														<image class="sc-list-item-attr-edit-image" src="../../image/+.png" mode="aspectFit" data-index="{{index}}" />
-												</view>
-										</view>
-								</view>
-						</view>
+	</view>
+	<!-- 列表 -->
+	<view class="sc-list" wx:if="{{cart_list.length}}">
+		<!-- 每个商品 -->
+		<view
+		      class="sc-list-item"
+		      wx:for="{{ cart_list }}"
+		      wx:for-index="index"
+		      wx:for-item="item"
+		      wx:key="index">
+			<!-- 单选按钮 -->
+			<view class="sc-list-item-radio-box">
+				<view
+				      class="sc-list-item-radio"
+				      data-id="{{index}}"
+				      bind:tap="selectEle"
+				      style="background-color: {{ item.isChecked ? 'red' : '#FFF'}}" />
+			</view>
+			<!-- 图片 -->
+			<view class="sc-list-item-pic-box">
+				<image
+				       mode="aspectFit"
+				       class="sc-list-item-pic"
+				       src="{{item.goods_pic}}"
+				       lazy-load="true" />
+			</view>
+			<!-- 属性 -->
+			<view class="sc-list-item-attr-box">
+				<view class="sc-list-item-attr-name">
+					<text>{{item.goods_name}}</text>
 				</view>
+				<view class="sc-list-item-attr-list">属性列表</view>
+				<view class="sc-list-item-attr-edit">
+					<!-- 价格 -->
+					<view class="sc-list-item-attr-edit-price">价格</view>
+					<!-- 数量修改 -->
+					<view class="sc-list-item-attr-edit-num">
+						<view class="sc-list-item-attr-edit-num-reduce" data-id="{{ index }}" bind:tap="reduceEleNum">
+							<image
+							       class="sc-list-item-attr-edit-image"
+							       src="../../image/-.png"
+							       mode="aspectFit"
+							       data-index="{{index}}" />
+						</view>
+						<input
+						       class="sc-list-item-attr-edit-num-content"
+						       data-id="{{index}}"
+						       bind:blur="numberBlur"
+						       type="number"
+						       value="{{item.num}}" />
+						<view class="sc-list-item-attr-edit-num-add" data-id="{{ index }}" bind:tap="addEleNum">
+							<image
+							       class="sc-list-item-attr-edit-image"
+							       src="../../image/+.png"
+							       mode="aspectFit"
+							       data-index="{{index}}" />
+						</view>
+					</view>
+				</view>
+			</view>
 		</view>
-		<!-- 底部结算按钮 -->
-		<view class="sc-list-item-pic-account bottom-bar flex-row">
-				<view class="sc-list-item-pic-account-select_all" bind:tap="toggleSelectAll">
-						<view class="sc-list-item-pic-account-select_all-radio" style="background-color: {{ isSelectedAll ? 'red' : '#FFF'}}" />
-				</view>
-				<view class="flex-y-center flex-grow-1" style="padding:0 24rpx">
-						应付金额:
-						<view class="flex-grow-1" style="color:#ff4544 ">
-								￥
-								<block>
-										<block>{{total_price}}</block>
-								</block>
-						</view>
-				</view>
-				<view class="flex-y-center flex-grow-0 flex-x-center submit-btn" bindtap="settleAccounts">
-						去结算
-				</view>
+	</view>
+	<!-- 底部结算按钮 -->
+	<view class="sc-list-item-pic-account bottom-bar flex-row">
+		<view class="sc-list-item-pic-account-select_all" bind:tap="toggleSelectAll">
+			<view class="sc-list-item-pic-account-select_all-radio" style="background-color: {{ isSelectedAll ? 'red' : '#FFF'}}" />
 		</view>
+		<view class="flex-y-center flex-grow-1" style="padding:0 24rpx">
+			应付金额:
+			<view class="flex-grow-1" style="color:#ff4544 ">
+				￥
+				<block>
+					<block>{{total_price}}</block>
+				</block>
+			</view>
+		</view>
+		<view class="flex-y-center flex-grow-0 flex-x-center submit-btn" bindtap="settleAccounts">
+			去结算
+		</view>
+	</view>
 </view>
+

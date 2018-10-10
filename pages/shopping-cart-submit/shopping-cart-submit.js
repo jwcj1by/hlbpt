@@ -255,7 +255,6 @@ Page({
     }
     page.getOrderData(page.data.options);
   },
-
   getOrderData: function (options) {
 
     var page = this;
@@ -397,7 +396,6 @@ Page({
       });
     }
   },
-
   copyText: function (e) {
     var text = e.currentTarget.dataset.text;
     if (!text)
