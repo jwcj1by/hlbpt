@@ -1,5 +1,11 @@
 import api from '../../api.js'
 import utils from '../../utils/utils.js'
+import {
+  add,
+  sub,
+  mul,
+  div
+} from '../../utils/utils'
 import regeneratorRuntime from '../../libs/regenerator-runtime/runtime' // 支持async await
 
 const app = getApp()
@@ -11,6 +17,24 @@ Page({
     cart_id_list: [],
     total_price: 0,
     isSelectedAll: false
+  },
+  async onShow() {
+    this.setData({
+      editing: false,
+      cart_list: [],
+      cart_id_list: [],
+      total_price: 0,
+      isSelectedAll: false
+    })
+    try {
+      const _RES = await app.fetch({
+        url: api.cart.list
+      })
+      const LIST = _RES.list
+      this.unitPriceFactory(LIST)
+      this.totalPriceFactory(LIST)
+      this.selectedFactory()
+    } catch (error) {}
   },
   // 编辑购物车
   editCart() {
@@ -134,7 +158,8 @@ Page({
   unitPriceFactory(unitList) { // 单价设置
     let _unitList = unitList
     _unitList.forEach((element) => {
-      element.unit_price = element.price / element.num
+
+      element.unit_price = div(element.price, element.num)
     })
     this.setData({
       cart_list: _unitList
@@ -147,23 +172,12 @@ Page({
       if (element.isChecked) {
         let _unitPrice = element.unit_price
         let _unitNum = element.num
-        _totalPrice += _unitPrice * _unitNum
+        _totalPrice = add(_totalPrice, mul(_unitPrice, _unitNum))
       }
     })
     this.setData({
       total_price: _totalPrice
     })
-  },
-  async onLoad() {
-    try {
-      const _RES = await app.fetch({
-        url: api.cart.list
-      })
-      const LIST = _RES.list
-      this.unitPriceFactory(LIST)
-      this.totalPriceFactory(LIST)
-      this.selectedFactory()
-    } catch (error) {}
   },
   async _syncNum(id, val) { // 后台同步数量
     let num = val
@@ -238,7 +252,11 @@ Page({
 
   },
   // 编辑-删除
-  editDel() {
+  async editDel() {
+    // wx.showModal({
+    //   title: '提示',
+    //   content: '是否确认删除'
+    // })
     let _cart_id_list = this.data.cart_id_list
     let _cart_list = this.data.cart_list
     _cart_list = _cart_list.filter((element, index) => {
@@ -247,25 +265,39 @@ Page({
         return true
       }
     })
+    //
+    try {
+      const RES = await app.fetch({
+        url: api.cart.delete,
+        data: {
+          cart_id_list: _cart_id_list
+        }
+      })
 
+      wx.showToast({
+        title: '删除成功!'
+      })
+    } catch (error) {}
+
+    this.toggleSelectAll()
     this.setData({
       cart_list: _cart_list
     })
 
     this.setCartIdList()
     this.judgeMomentIsSelectAll()
-    // this.toggleSelectAll()
-    // app.fetch({
-    //   url: api.
-    // })
   },
   settleAccounts() { // 去结算
     // wx.showLoading({
     //   title: "正在提交",
     //   mask: true,
     // })
+    if (this.data.cart_id_list) {
+      
+    }
+
     wx.navigateTo({
-      url: `/pages/shopping-cart-submit/shopping-cart-submit?cart_id_list=${this.data.cart_id_list}`
+      url: `/pages/shopping-cart-submit/shopping-cart-submit?cart_id_list=${JSON.stringify(this.data.cart_id_list)}`
     })
   }
 })

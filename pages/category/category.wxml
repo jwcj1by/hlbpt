@@ -1,2 +1,77 @@
-<!--pages/category/category.wxml-->
-<text>pages/category/category.wxml</text>
+<view class="cg-content">
+	<view class="search-box">
+		<view class="search">
+			<image class="icon" src="/image/search.png" />
+			<input
+			       type="text"
+			       class="key"
+						 placeholder="请输入搜索关键词"
+						 value="{{ key_word }}"
+						 bindfocus="searchOnfocus"
+			       bindconfirm="runSearch" />
+		</view>
+	</view>
+	<!-- 分类列表 -->
+	<view class="fenlei-list" wx:if="{{category_list_show}}">
+		<view class="ul">
+			<view
+			      class="li"
+			      wx:for="{{nav_category}}"
+			      wx:for-index="index"
+			      wx:for-item="item"
+			      wx:key="{{index}}"
+			      data-id="{{item.id}}"
+			      bind:tap="getList">
+				<image class="pic" src="{{item.pic_url}}" />
+				<text class="txt">{{item.name}}</text>
+			</view>
+		</view>
+	</view>
+	<!-- 商品列表 -->
+	<view class='v-good-list-container' wx:if="{{goods_list}}">
+		<view
+		      wx:for="{{goods_list}}"
+		      wx:for-index="g_idx"
+		      wx:for-item="g_item"
+		      class='v-good-list-item'
+		      wx:key="{{g_idx}}"
+		      hover-class=""
+		      bindtap="onGoodClick"
+		      data-msg="{{g_item}}">
+			<!-- 商品图片 -->
+			<view class='left'>
+				<image src="{{g_item.pic_url}}" />
+			</view>
+			<!-- 商品简略信息 -->
+			<view class='right'>
+				<!-- 商品名 -->
+				<view class='tit'>{{ g_item.name }}</view>
+				<!-- 介绍 -->
+				<view wx:if="{{g_item.desc}}" class='desc'>{{ g_item.desc }}</view>
+				<!-- 关联活动 -->
+				<view class='label'>
+					<block
+					       wx:for="{{g_item.services}}"
+					       wx:for-index="service_idx"
+					       wx:for-item="service_item"
+					       wx:key="{{service_idx}}">
+						<text>{{service_item}}</text>
+					</block>
+				</view>
+				<!-- 价格 -->
+				<view class='price'>
+					<text class='now'>￥{{ g_item.price }}</text>
+					<!-- <text class='old'>￥186</text> -->
+				</view>
+			</view>
+		</view>
+		<view class="weui-loadmore" hidden="{{!isLoading}}">
+			<view class="weui-loading" />
+			<view class="weui-loadmore__tips">正在加载</view>
+		</view>
+		<view class="nomore" wx:if="{{isReachLastPage}}">
+			<text>没有更多了~</text>
+		</view>
+	</view>
+</view>
+

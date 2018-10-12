@@ -21,12 +21,13 @@
     "pages/category/category",
     "pages/standard-good-detail/standard-good-detail",
     "pages/shopping-cart/shopping-cart",
-    "pages/shopping-cart-submit/shopping-cart-submit"
+    "pages/shopping-cart-submit/shopping-cart-submit",
+    "pages/category-detail-list/category-detail-list"
   ],
   "window": {
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "红喇叭拼团",
+    "navigationBarTitleText": "肛消洁",
     "navigationBarTextStyle": "black",
     "backgroundColor": "#f2f2f2"
   },
@@ -35,7 +36,8 @@
     "selectedColor": "#e71a41",
     "borderStyle": "#eaebec",
     "backgroundColor": "#f7f7fa",
-    "list": [{
+    "list": [
+      {
         "pagePath": "pages/index/index",
         "iconPath": "image/icon1.png",
         "selectedIconPath": "image/icon1_selected.png",

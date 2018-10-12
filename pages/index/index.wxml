@@ -85,7 +85,7 @@
 					<view class="weui-loadmore__tips">正在加载</view>
 				</view>
 				<view class="nomore" hidden="{{!isReachLastPage}}">
-					<text>没有更多商品了</text>
+					<text>没有更多了~</text>
 				</view>
 			</view>
 		</view>

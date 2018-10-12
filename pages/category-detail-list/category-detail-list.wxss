@@ -1,12 +1,5 @@
-/* pages/category/category.wxss */
-view {
-  box-sizing: border-box;
-}
-
-.cg-content {
-  background-color: rgb(255, 255, 255);
-}
-
+/* category-detail-list/category-detail-list.wxss */
+/* 搜索框start */
 .search-box {
   display: flex;
   justify-content: center;
@@ -33,46 +26,13 @@ view {
   left: 40rpx;
   top: 10rpx;
 }
-
+/* 搜索框 end*/
 .search-box .search input {
   height: 100%;
   line-height: 100%;
   margin-left: 100rpx;
 }
 
-.fenlei-list {
-  background: #ffffff;
-  height: 100%;
-  float: left;
-}
-
-.fenlei-list .ul {
-  padding-top: 20rpx;
-  width: 100%;
-  float: left;
-}
-
-.fenlei-list .ul .li {
-  float: left;
-  text-align: center;
-  width: 25%;
-  margin-bottom: 20rpx;
-}
-
-.fenlei-list .ul .li .pic {
-  display: inline-block;
-  width: 140rpx;
-  height: 140rpx;
-}
-
-.fenlei-list .ul .li .txt {
-  display: inline-block;
-  line-height: 60rpx;
-  color: #666;
-}
-
-
-/* // 211323 */
 .top-tab {
   width: 100%;
   position: fixed;
@@ -118,6 +78,10 @@ view {
 .swiper image {
   height: 245rpx;
   width: 100%;
+}
+
+.v-good-list-container {
+  margin: 10rpx 0 0 0;
 }
 
 .v-good-list-container .v-good-list-item {

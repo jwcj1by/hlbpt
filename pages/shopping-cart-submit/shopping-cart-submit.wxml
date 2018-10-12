@@ -1,25 +1,25 @@
 <!-- order-submit.wxml -->
 <navigator url="/pages/address-picker/address-picker" class='adr-text icon-right'>
-	<!-- 地址 -->
-	<block wx:if="{{ address }}">
-		<image src="/image/car-border-top.png" style="width : 750rpx;height :  10rpx; position : absolute;top : 0;left : 0;" />
-		<view class='adr-l'>
-			<view>{{address.name}}</view>
-			<view class='adr-on' wx:if="{{  item.is_default == 1 }}">默认</view>
-		</view>
-		<view class='adr-r'>
-			<view>{{address.mobile}}</view>
-			<view class='adr-r-a'>
-				{{address.province}}{{address.city}}{{address.district}}{{address.detail}}
-			</view>
-		</view>
-	</block>
-	<block wx:else>
-		<view class="flex-grow-1 flex-y-center flex-x-center">请选择收货地址</view>
-	</block>
+  <!-- 地址 -->
+  <block wx:if="{{ address }}">
+    <image src="/image/car-border-top.png" style="width : 750rpx;height :  10rpx; position : absolute;top : 0;left : 0;" />
+    <view class='adr-l'>
+      <view>{{address.name}}</view>
+      <view class='adr-on' wx:if="{{  item.is_default == 1 }}">默认</view>
+    </view>
+    <view class='adr-r'>
+      <view>{{address.mobile}}</view>
+      <view class='adr-r-a'>
+        {{address.province}}{{address.city}}{{address.district}}{{address.detail}}
+      </view>
+    </view>
+  </block>
+  <block wx:else>
+    <view class="flex-grow-1 flex-y-center flex-x-center">请选择收货地址</view>
+  </block>
 </navigator>
 <!-- 商品图片预览 -->
-<view class="goods-preview">
+<!-- <view class="goods-preview">
 	<view class="goods-priview-photos">
 		<image
 		       wx:for="{{ goods_list }}"
@@ -32,22 +32,46 @@
 	<view class="goods-priview-loadmore">
 		<text class="goods-priview-loadmore-num">共{{ goods_list.length }}件</text>
 	</view>
+</view> -->
+<view class="cart-list">
+  <view class="cart-item flex-row" wx:for="{{goods_list}}" wx:key="{{ index }}">
+    <view class="flex-grow-0">
+      <image class="goods-pic" mode="aspectFill" src="{{item.goods_pic}}" />
+    </view>
+    <view class="flex-grow-1 flex-col">
+      <view class="flex-grow-1">
+        <view class="goods-name">{{item.goods_name}}</view>
+        <view class="attr-list">
+          <view class="attr-item" wx:for="{{item.attr_list}}" wx:for-item="attr" wx:key="{{ index }}">
+            {{attr.attr_group_name}}:{{attr.attr_name}}
+          </view>
+        </view>
+        <view class='flex-row flex-spa attr-num'>
+          <!-- 单价 -->
+          <view class="flex-grow-0 price">￥{{item.price}}</view>
+          <!-- 数量 -->
+          <view class="flex-grow-0">
+            <text>x {{item.num}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
 </view>
-
 <!-- 各项费用 -->
 <view class="flex-row order-coupon goods-other-money">
-	<view class="flex-grow-1 o-ml">运费：</view>
-	<view class="flex-grow-0 o-ml">
-		<block wx:if="{{ address }}">
-			<view>￥{{express_price}}</view>
-		</block>
-		<block wx:elif="{{ offline==1 }}">
-			<view>￥0.00</view>
-		</block>
-		<block wx:else>
-			<view style="color : #999">请先选择收货地址</view>
-		</block>
-	</view>
+  <view class="flex-grow-1 o-ml">运费：</view>
+  <view class="flex-grow-0 o-ml">
+    <block wx:if="{{ address }}">
+      <view>￥{{express_price}}</view>
+    </block>
+    <block wx:elif="{{ offline==1 }}">
+      <view>￥0.00</view>
+    </block>
+    <block wx:else>
+      <view style="color : #999">请先选择收货地址</view>
+    </block>
+  </view>
 </view>
 <view style='height : 100rpx;' />
 <!-- <view class="coupon-picker" wx:if="{{show_coupon_picker}}">
@@ -107,13 +131,12 @@
 </view> -->
 <!-- 选择自提地址  结束 -->
 <view class="bottom-bar flex-row">
-	<view class="flex-y-center flex-grow-1" style="padding :  0 24rpx">
-		应付金额:
-		<view class="flex-grow-1" style="color : #ff4544 ">
-			￥
-			<block>{{ total_price }}</block>
-		</view>
-	</view>
-	<view class="flex-y-center flex-grow-0 flex-x-center submit-btn" bindtap="orderSubmit">付款</view>
+  <view class="flex-y-center flex-grow-1" style="padding :  0 24rpx">
+    应付金额:
+    <view class="flex-grow-1" style="color : #ff4544 ">
+      ￥
+      <block>{{ total_price }}</block>
+    </view>
+  </view>
+  <view class="flex-y-center flex-grow-0 flex-x-center submit-btn" bindtap="orderSubmit">付款</view>
 </view>
-

@@ -1,0 +1,7 @@
+<!-- category-detail-list/category-detail-list.wxml -->
+<view class="search-box">
+		<view class="search">
+				<image class="icon" src="/image/search.png" />
+				<input type="text" class="key" placeholder="请输入搜索关键词" bind:tap="runSearch" />
+		</view>
+</view>

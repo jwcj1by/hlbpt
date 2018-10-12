@@ -3,7 +3,9 @@ var api = require('../../api.js');
 
 var app = getApp();
 import regeneratorRuntime from '../../libs/regenerator-runtime/runtime' // 支持async await
-import { STORE_ID_SET } from '../../utils/status'
+import {
+  STORE_ID_SET
+} from '../../utils/status'
 Page({
   /**
    * 页面的初始数据
@@ -67,6 +69,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   async onLoad(options) {
+    console.log(options)
     let _options = options
     let data = {
       cart_id_list: _options.cart_id_list,
@@ -104,7 +107,7 @@ Page({
       })
     }
   },
-  async orderSubmit () {
+  async orderSubmit() { // 提交订单再进行支付
     let _cart_id_list = this.data.cart_id_list
     wx.showLoading({
       title: "正在提交",
@@ -112,7 +115,7 @@ Page({
     });
     //提交订单
     try {
-      const RES = await app.fetch({
+      const RES_SUBMIT = await app.fetch({
         url: api.order.submit,
         method: 'POST',
         data: {
@@ -122,10 +125,33 @@ Page({
           buy_type: STORE_ID_SET.FIRST
         }
       })
-    } catch (error) {
-      console.error(error)
-    }
-   
+      const RES_PAY = await app.fetch({
+        url: api.order.pay_data,
+        data: {
+          store_id: 1,
+          order_id: RES_SUBMIT.order_id,
+          pay_type: 'WECHAT_PAY',
+        }
+      })
+      // 调起支付窗口
+      this.wakeupPayWindow(RES_PAY)
+    } catch (error) {}
+
+  },
+  // 调起支付接口
+  wakeupPayWindow(pay_msg) {
+    // 微信支付API
+    wx.requestPayment(Object.assign(pay_msg, {
+      success(err_log) {
+        console.log(err_log, 'success pay')
+      },
+      fail (err_log) { // 1.用户取消 2.支付失败(含详细原因)
+        console.log(err_log, 'error pay')
+      },
+      complete (err_log) {
+
+      }
+    }))
   },
   getOrderData: function (options) {
     var page = this;
@@ -349,6 +375,5 @@ Page({
     this.setData({
       mobile: e.detail.value
     });
-  },
-
+  }
 });

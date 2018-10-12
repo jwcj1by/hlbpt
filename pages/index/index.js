@@ -24,7 +24,14 @@ Page({
     isOnReachBottom: false, // 是否正在下拉刷新
     isLoading: false // 当前是否在加载
   },
-  async onLoad() {
+  async onShow() {
+    const _current_catgory_id = wx.getStorageSync('current_catgory_id')
+    if (_current_catgory_id) {
+      this.setData({
+        active_nav: _current_catgory_id
+      })
+      wx.removeStorageSync('current_catgory_id')
+    }
     await this.getNavBar()
     await this.getBanner()
     await this.getGoodList(this.data.active_nav)
@@ -111,7 +118,7 @@ Page({
       if (cat_id == 0) { // 推荐属性
         req_data_good_list.data.tag = 3
       } else {
-        req_data_good_list.data.cart_id = cat_id
+        req_data_good_list.data.cat_id = cat_id
       }
 
       let res_good_list = await app.fetch(req_data_good_list)
@@ -148,7 +155,8 @@ Page({
     this.setData({
       active_nav: curr_id,
       isReachLastPage: false,
-      current_page: 1
+      current_page: 1,
+      isOnReachBottom: false
     })
     await this.getGoodList(curr_id)
     setTimeout(() => {
