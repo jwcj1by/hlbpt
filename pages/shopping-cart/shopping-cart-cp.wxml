@@ -1,6 +1,6 @@
 <!-- shopping-cart.wxml -->
 <view class="cart-list">
-	<block wx:if="{{    cart_list.length > 0    }}">
+	<block wx:if="{{cart_list.length > 0}}">
 		<view
 		      class="cart-item flex-row"
 		      wx:for="{{    cart_list    }}"

@@ -1,28 +1,34 @@
 <template name="goodspj">
-  <view class="comment-item flex-row" wx:for="{{ comment_list }}" wx:key="{{ index }}">
-    <view class='flex-y-center flex-spa'>
-      <view class='flex-x-center'>
-        <image class='pic-item' src="{{item.avatar_url}}" />
-        <view class='nickname'>
-          <text>{{ item.nickname }}</text>
-          <view class='pic-xing-box'>
-            <image class='pic-xing' src="/image/xing.png" />
-            <view class='pic-xing-s' style='{{ "width:"+item.score + "%"}}'>
-              <image class='pic-xings' src="/image/xings.png" />
-            </view>
-          </view>
-        </view>
-      </view>
-      <view class='flex-y-center zan-num' id="{{item.oc_id}}" data-i='{{index}}' bindtap='onZan'>
-        <image wx:if="{{item.is_praised == 'yes'}}" class='pic-zan' src="/image/zans.png" />
-        <image wx:else class='pic-zan' src="/image/zan.png" /> ({{ item.praise_count}})
-      </view>
-    </view>
+	<view class="comment-item flex-row" wx:for="{{ comment_list }}" wx:for-index="index" wx:key="{{ index }}">
+		<view class='flex-y-center flex-spa'>
+			<view class='flex-x-center'>
+				<image class='pic-item' src="{{item.avatar_url}}" />
+				<view class='nickname'>
+					<text>{{ item.nickname }}</text>
+					<view class='pic-xing-box'>
+						<image class='pic-xing' src="/image/xing.png" />
+						<view class='pic-xing-s' style='{{ "width:"+item.score + "%"}}'>
+							<image class='pic-xings' src="/image/xings.png" />
+						</view>
+					</view>
+				</view>
+			</view>
+			<view
+			      class='flex-y-center zan-num'
+			      data-index="{{index}}"
+			      data-i='{{index}}'
+			      bindtap='onZan'>
+				<image wx:if="{{item.is_praised == 'yes'}}" class='pic-zan' src="/image/zans.png" />
+				<image wx:else class='pic-zan' src="/image/zan.png" />
+				({{ item.praise_count}})
+			</view>
+		</view>
 
-    <text class='pic-list'>{{item.content}}</text>
-    <view class='addtime'>
-      <text>{{item.addtime}}</text>
-      <text style='margin-left:30rpx;'>{{item.attr_name}}</text>
-    </view>
-  </view>
+		<text class='pic-list'>{{item.content}}</text>
+		<view class='addtime'>
+			<text>{{item.addtime}}</text>
+			<text style='margin-left:30rpx;'>{{item.attr_name}}</text>
+		</view>
+	</view>
 </template>
+

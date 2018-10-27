@@ -8,17 +8,20 @@ page {
   justify-content: space-between;
   width: 730rpx;
   height: 98rpx;
-  margin-left:20rpx;
+  margin-left: 20rpx;
   border-bottom: 1px solid #e5e5e5;
   color: #333;
 }
+
 .addr-b text {
-	color: #bbb;
-}
-.placeholder{
   color: #bbb;
 }
-.adr-setml{
+
+.placeholder {
+  color: #bbb;
+}
+
+.adr-setml {
   font-size: 28rpx;
   color: #333;
   display: flex;
@@ -27,9 +30,16 @@ page {
   flex-direction: row;
   margin: 30rpx 0;
 }
- .adr-setml icon {
-   margin-right: 12rpx;
- }
+
+.adr-setml icon {
+  margin-right: 12rpx;
+}
+
+.adr-del {
+  margin-left: 50rpx;
+  color: red;
+}
+
 .adr-add {
   background-color: #e71a41;
   height: 98rpx;
@@ -43,14 +53,13 @@ page {
   z-index: 22;
   color: #fff;
 }
+
 .edit-row {
   margin: auto;
   width: 710rpx;
 }
 
-.edit-row:first-child {
-  
-}
+.edit-row:first-child {}
 
 .edit-row .row-label {
   margin: 20rpx 0;

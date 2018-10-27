@@ -21,48 +21,67 @@ Page({
     current_page: 1,
     goodListScrollTop: 0,
     isReachLastPage: false, // 是否到达最后一页
-    isOnReachBottom: false, // 是否正在下拉刷新
-    isLoading: false // 当前是否在加载
+    isOnPullDownRefreshing: false, // 是否正在下拉刷新
+    isLoading: false, // 当前是否在加载
+    active_cat_id: 0,
+    nav_icon_list: []
+  },
+  async onLoad() {
+    // 转发分享
+    wx.showShareMenu({
+      withShareTicket: true
+    })
   },
   async onShow() {
-    const _current_catgory_id = wx.getStorageSync('current_catgory_id')
-    if (_current_catgory_id) {
-      this.setData({
-        active_nav: _current_catgory_id
-      })
-      wx.removeStorageSync('current_catgory_id')
-    }
+    app.getShoppingCart()
     await this.getNavBar()
     await this.getBanner()
-    await this.getGoodList(this.data.active_nav)
+    await this.getBaseMsg()
+
+    const _current_catgory_id = wx.getStorageSync('current_catgory_id')
+    if (_current_catgory_id) {
+      wx.removeStorageSync('current_catgory_id')
+
+      if (_current_catgory_id === this.data.active_nav) {
+        return
+      }
+      let _activeCatId = this.data.nav_category[_current_catgory_id].id
+      this.setData({
+        active_nav: _current_catgory_id,
+        active_cat_id: _activeCatId,
+        goods_list: [],
+        isReachLastPage: false
+      })
+      await this.getGoodList(_activeCatId)
+    } else {
+      await this.getGoodList(this.data.active_cat_id)
+    }
   },
   async onPullDownRefresh() { // 下拉刷新
     this.setData({
-      isOnPullDownRefresh: true,
+      isOnPullDownRefreshing: true,
       isReachLastPage: false,
       current_page: 1
     })
-    await this.onLoad()
+    await this.getGoodList()
     this.setData({
-      isOnPullDownRefresh: false
+      isOnPullDownRefreshing: false
     })
     wx.stopPullDownRefresh()
     this.setPageScrollTop()
   },
   async onReachBottom() { // 上拉触底
+    this.lodingShow()
     let active_nav = this.data.active_nav
     let current_page = this.data.current_page
 
     if (!this.data.isReachLastPage) { // 当前不是最后一页
       this.setData({
-        current_page: current_page + 1,
-        isOnReachBottom: true
+        current_page: current_page + 1
       })
       await this.getGoodList(active_nav, current_page + 1)
-      this.setData({
-        isOnReachBottom: false
-      })
     }
+    this.lodingHide()
   },
   /**
    * 自定义函数
@@ -76,16 +95,25 @@ Page({
         }
       })
 
+      let _recommend = {
+        big_pic_url: "",
+        id: "0",
+        list: [],
+        name: "推荐",
+        parent_id: "0",
+        pic_url: "http://honglaba.me/uploads/image/78/78d36d3228851d25ed5cadb58b0a700e.jpg",
+        store_id: "0"
+      }
+
       let nav_category = res_top_category.list
+      nav_category.unshift(_recommend)
 
       this.setData({
-        nav_category
+        nav_category,
+        active_cat_id: nav_category[this.data.active_nav].id
       })
 
-    } catch (error) {
-      console.error(error)
-    }
-
+    } catch (error) {}
   },
   async getBanner() {
     try {
@@ -104,14 +132,32 @@ Page({
       })
     } catch (error) {}
   },
-  async getGoodList(cat_id, page = 1, limit = 4) { // 获取商品列表
+  async getBaseMsg() {
     try {
-      this.lodingShow()
+      const RES = await app.fetch({
+        url: api.default.index
+      })
+      const nav_icon_list = RES.nav_icon_list
+      this.setData({
+        nav_icon_list
+      })
+      console.log(RES.nav_icon_list)
+    } catch (error) {
+      console.error(error)
+    }
+  },
+  async getGoodList(cat_id = this.data.active_cat_id, page = 1, limit = 8) { // 获取商品列表
+    if (this.data.isReachLastPage) { // 如果当前为最后一页则不执行
+      return
+    }
+    const _currList = this.data.goods_list
+    try {
       let req_data_good_list = {
         url: api.default.goods_list,
         data: {
           page,
-          limit
+          limit,
+          sort: 1
         }
       }
 
@@ -131,8 +177,8 @@ Page({
         element.services = services
       })
 
-      if (this.data.isOnReachBottom) { // 当前为上拉加载
-        goods_list = this.data.goods_list.concat(goods_list)
+      if (!this.data.isOnPullDownRefreshing) { // 当前不是在下拉刷新
+        goods_list = _currList.concat(goods_list)
       }
 
       this.setData({
@@ -140,25 +186,36 @@ Page({
       })
 
       //  如果当前为最后一页
+      console.log(this.data.current_page, 'this.data.current_page')
+      console.log(res_good_list.page_count, 'res_good_list.page_count')
       if (this.data.current_page >= res_good_list.page_count) {
         this.setData({
           isReachLastPage: true
         })
       }
-      this.lodingHide()
+
     } catch (error) {}
   },
   async onNavClick(e) { // tab栏点击
+    wx.showLoading({
+      title: '卖力加载中...'
+    })
+    let _navCategory = this.data.nav_category
+    let _currId = e.currentTarget.dataset.id
     this.setPageScrollTop()
     wx.showNavigationBarLoading()
-    let curr_id = e.currentTarget.dataset.id
     this.setData({
-      active_nav: curr_id,
+      active_nav: _currId,
       isReachLastPage: false,
       current_page: 1,
-      isOnReachBottom: false
+      isOnReachBottom: false,
+      goods_list: [],
+      active_cat_id: _navCategory[_currId].id
     })
-    await this.getGoodList(curr_id)
+    await this.getGoodList(_navCategory[_currId].id)
+    wx.hideLoading({
+      title: '卖力加载中...'
+    })
     setTimeout(() => {
       wx.hideNavigationBarLoading()
     }, 500)
@@ -179,16 +236,47 @@ Page({
       duration: 0
     })
   },
-  async onGoodClick(e) { // 跳转至商品详情
-    console.log(e)
-    let goods_id = e.currentTarget.dataset.msg.id
-    // let detail = await app.fetch({
-    //   url: api.default.goods,
-    //   data: {
-    //     id: goods_id
-    //   }
-    // })
+  navigatorClick (e) {
+    let _index = e.currentTarget.dataset.index
+    if (_index === 2) {
+      wx.navigateTo({
+        url: `../pingtuan/pingtuan`
+      })
+    }
+    return
+    var page = this;
+    var open_type = e.currentTarget.dataset.open_type;
+    var url = e.currentTarget.dataset.url;
+    if (open_type != 'wxapp')
+      return true;
+    url = parseQueryString(url);
+    url.path = url.path ? decodeURIComponent(url.path) : ""
+    wx.navigateToMiniProgram({
+      appId: url.appId,
+      path: url.path,
+      complete: function (e) {
+        console.log(e);
+      }
+    });
+    return false;
 
+    function parseQueryString(url) {
+      var reg_url = /^[^\?]+\?([\w\W]+)$/,
+        reg_para = /([^&=]+)=([\w\W]*?)(&|$|#)/g,
+        arr_url = reg_url.exec(url),
+        ret = {};
+      if (arr_url && arr_url[1]) {
+        var str_para = arr_url[1],
+          result;
+        while ((result = reg_para.exec(str_para)) != null) {
+          ret[result[1]] = result[2];
+        }
+      }
+      return ret;
+    }
+  },
+  async onGoodClick(e) { // 跳转至商品详情
+    let goods_id = e.detail.dataset.msg.id
     wx.navigateTo({
       url: `../standard-good-detail/standard-good-detail?id=${goods_id}`
     })

@@ -27,7 +27,7 @@ Page({
     var index = e.currentTarget.dataset.index;
     var address = page.data.address_list[index];
     wx.setStorageSync("picker_address", address);
-    wx.navigateBack();
+    wx.navigateBack()
   },
 
   getWechatAddress: function (e) {

@@ -16,16 +16,16 @@ Page({
 
 
   onLoad: function (options) {
-    var page = this;
-    is_no_more = false;
-    is_loading = false;
-    p = 2;
-    page.loadOrderList(options.status || -1);
-    var pages = getCurrentPages();
+    var page = this
+    is_no_more = false
+    is_loading = false
+    p = 2
+    page.loadOrderList(options.status || -1)
+    var pages = getCurrentPages()
     if (pages.length < 2) {
       page.setData({
         show_index: true,
-      });
+      })
     }
   },
 
@@ -57,8 +57,6 @@ Page({
       }
     });
   },
-
-
   onReachBottom: function () {
     var page = this;
     if (is_loading || is_no_more)
@@ -88,7 +86,6 @@ Page({
       }
     });
   },
-
   orderPay: function (e) {
     wx.showLoading({
       title: "正在提交",

@@ -1,126 +1,68 @@
 // pages/authorized/authorized.js
-var t = require("../../api.js")
-
+import regeneratorRuntime from '../../libs/regenerator-runtime/runtime' // 支持async await
+const api = require("../../api.js")
+const app = getApp()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    code:''
+    code: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-     var e = this;
-      wx.login({
-        success: function (a) {
-          if (a.code) {         
-            console.log(a.code);
-            e.setData({
-              code : a.code
-            })
+    var e = this;
+    wx.login({
+      success: function (a) {
+        if (a.code) {
+          e.setData({
+            code: a.code
+          })
+        }
+      }
+    })
+  },
+  async userInfoHandler(e) { // 点击授权后的回调
+    wx.showLoading()
+    if (e.detail.userInfo) {
+      try {
+        const RES = await app.fetch({
+          url: api.passport.login,
+          method: 'POST',
+          data: {
+            code: this.data.code,
+            user_info: e.detail.rawData,
+            encrypted_data: e.detail.encryptedData,
+            iv: e.detail.iv,
+            signature: e.detail.signature
           }
-        }
-      })
-  },
+        })
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-  
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-  
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh: function () {
-  
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom: function () {
-  
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage: function () {
-  
-  },
-
-  userInfoHandler: function (e) {
-        if (e.detail.userInfo) {
-            console.log(e.detail);
-            console.log(e.detail.userInfo.avatarUrl)
-            
-            getApp().request({
-              url: t.passport.login,
-              method: "post",
-              data: {
-                code: this.data.code,
-                user_info: e.detail.rawData,
-                encrypted_data: e.detail.encryptedData,
-                iv: e.detail.iv,
-                signature: e.detail.signature
-              },
-              success: function (t) {
-
-                if (wx.hideLoading(), 0 == t.code) {
-                  wx.setStorageSync("access_token", t.data.access_token), wx.setStorageSync("user_info", {
-                    nickname: t.data.nickname,
-                    avatar_url: t.data.avatar_url,
-                    is_distributor: t.data.is_distributor,
-                    parent: t.data.parent,
-                    id: t.data.id,
-                    is_clerk: t.data.is_clerk
-                  });
-                  
-                  
-                } else wx.showToast({
-                  title: t.msg
-                })
-
-
-              }
-            })
-
-            wx.navigateBack()   //返回上一页
-        } else {
-            wx.showModal({
-                title: '用户信息授权失败',
-                showCancel: false,
-                success(){
-                    wx.navigateBack()   //返回上一页
-                }
-            })
-        }
+        wx.setStorageSync("access_token", RES.access_token)
+        wx.setStorageSync("user_info", {
+          nickname: RES.nickname,
+          avatar_url: RES.avatar_url,
+          is_distributor: RES.is_distributor,
+          parent: RES.parent,
+          id: RES.id,
+          is_clerk: RES.is_clerk
+        })
+        app.globalData.access_token = RES.access_token
+        app.getShoppingCart()
+        wx.navigateBack() //返回上一页
+      } catch (error) {
+        wx.showModal({
+          title: '用户信息授权失败',
+          showCancel: false,
+          success() {
+            wx.navigateBack() //返回上一页
+          }
+        })
+      }
     }
+  }
 })

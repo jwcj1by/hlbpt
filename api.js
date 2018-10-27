@@ -2,6 +2,7 @@
 // var _api_root = 'https://pt.lapp.honglaba.com/api/'
 // var _api_root = 'http://honglaba.me/api/'
 var _api_root = 'https://gxj.zhijiexiao.com/api/'
+// var _api_root = 'https://xcx.szxiyun.cn/api/'
 // 0元购首页：domain + /api/promotions/home
 // 爱拼团首页：domain + /api/group-buy/home
 // 帮助中心：domain + /api/default/article-detail?id=2

@@ -2,26 +2,34 @@
 var api = require('../../api.js');
 var area_picker = require('../../area-picker/area-picker.js');
 var app = getApp();
+import regeneratorRuntime from '../../libs/regenerator-runtime/runtime' // 支持async await
 Page({
   data: {
     name: "",
     mobile: "",
     detail: "",
     district: null,
-    is_default:true
+    is_default: true,
+    address_id: null
   },
   onLoad: function (options) {
     var page = this;
+
+    // let addr_id = options
     page.getDistrictData(function (data) {
       area_picker.init({
         page: page,
         data: data,
       });
     });
+    
+    if (Object.keys(options).length === 0) {
+      return
+    }
 
     page.setData({
       address_id: options.id,
-    });
+    })
     if (options.id) {
       wx.showLoading({
         title: "正在加载",
@@ -41,7 +49,27 @@ Page({
       });
     }
   },
+  async delAddr() {
+    try {
+      const RES = await app.fetch({
+        url: api.user.address_delete,
+        data: {
+          address_id: this.data.address_id
+        }
+      })
 
+      wx.showToast({
+        title: '删除成功'
+      })
+      wx.navigateBack()
+    } catch (error) {
+      console.error(error)
+      wx.showToast({
+        title: '删除失败'
+      })
+    }
+
+  },
   getDistrictData: function (cb) {
     var district = wx.getStorageSync("district");
     if (!district) {

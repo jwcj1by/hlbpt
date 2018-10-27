@@ -1,79 +1,4 @@
-/* pages/category/category.wxss */
-view {
-  box-sizing: border-box;
-}
-
-.cg-content {
-  background-color: rgb(255, 255, 255);
-}
-
-.search-box {
-  display: flex;
-  justify-content: center;
-  padding: 10rpx 0;
-  margin-top: 10rpx;
-  background: #ffffff;
-  border-bottom: #dbdbdb solid 1px;
-}
-
-.search-box .search {
-  position: relative;
-  width: 90%;
-  background: #f0f2f5;
-  height: 60rpx;
-  line-height: 60rpx;
-  border-radius: 30rpx;
-
-}
-
-.search-box .search .icon {
-  width: 40rpx;
-  height: 40rpx;
-  position: absolute;
-  left: 40rpx;
-  top: 10rpx;
-}
-
-.search-box .search input {
-  height: 100%;
-  line-height: 100%;
-  margin-left: 100rpx;
-}
-
-.fenlei-list {
-  width: 100%;
-  height: 100%;
-  float: left;
-}
-
-.fenlei-list .ul {
-  width: 100%;
-  float: left;
-}
-
-.fenlei-list .ul .li {
-  float: left;
-  text-align: center;
-  background: #ffffff;
-  width: 25%;
-  margin-bottom: 20rpx;
-  padding-top: 20rpx;
-}
-
-.fenlei-list .ul .li .pic {
-  display: inline-block;
-  width: 140rpx;
-  height: 140rpx;
-}
-
-.fenlei-list .ul .li .txt {
-  display: inline-block;
-  line-height: 60rpx;
-  color: #666;
-}
-
-
-/* // 211323 */
+/* components/component-good-list/component-good-list.wxss */
 .top-tab {
   width: 100%;
   position: fixed;
@@ -121,7 +46,7 @@ view {
   width: 100%;
 }
 
-.v-good-list-container .v-good-list-item {
+.v-good-list-item {
   display: flex;
   justify-content: space-between;
   background: #fff;
@@ -129,21 +54,21 @@ view {
   border-bottom: #f5f5f5 solid 1rpx;
 }
 
-.v-good-list-container .v-good-list-item .left {
+.v-good-list-item .left {
   margin-right: 20rpx;
 }
 
-.v-good-list-container .v-good-list-item .right {
+.v-good-list-item .right {
   flex: 1;
 }
 
-.v-good-list-container .v-good-list-item image {
+.v-good-list-item image {
   width: 240rpx;
   height: 240rpx;
 }
 
-.v-good-list-container .v-good-list-item .right .tit {
-  font-size: 30rpx;
+.v-good-list-item .right .tit {
+  font-size: 32rpx;
   color: #333;
   display: -webkit-box;
   word-break: break-all;
@@ -151,18 +76,21 @@ view {
   -webkit-line-clamp: 2;
   overflow: hidden;
   text-overflow: ellipsis;
+  height: 80rpx;
+  margin-bottom: 8rpx;
 }
 
-.v-good-list-container .v-good-list-item .right .desc {
-  font-size: 28rpx;
-  color: #999;
+.v-good-list-item .right .desc {
+  font-size: 26rpx;
+  color: #d2a448;
+  margin-bottom: 8rpx;
 }
 
-.v-good-list-container .v-good-list-item .right .label {
+.v-good-list-item .right .label {
   margin-top: 0;
 }
 
-.v-good-list-container .v-good-list-item .right .label text {
+.v-good-list-item .right .label text {
   padding: 0 10rpx;
   border-radius: 1rpx;
   font-size: 24rpx;
@@ -173,15 +101,15 @@ view {
   margin-right: 10rpx;
 }
 
-.v-good-list-container .v-good-list-item .right .price {
-  margin-top: 36rpx;
+.v-good-list-item .right .price {
+  margin-top: 26rpx;
 }
 
-.v-good-list-container .v-good-list-item .right .price .now {
+.v-good-list-item .right .price .now {
   color: #e71a41;
 }
 
-.v-good-list-container .v-good-list-item .right .price .old {
+.v-good-list-item .right .price .old {
   color: #999;
   text-decoration: line-through;
   margin-left: 10rpx;

@@ -6,6 +6,13 @@ import regeneratorRuntime from '../../libs/regenerator-runtime/runtime' // 支�
 import {
   STORE_ID_SET
 } from '../../utils/status'
+import {
+  add,
+  sub,
+  mul,
+  div
+} from '../../utils/utils'
+
 Page({
   /**
    * 页面的初始数据
@@ -21,7 +28,8 @@ Page({
     offline: 0,
     express_price_1: 0.00,
     name: "",
-    mobile: ""
+    mobile: "",
+    page_options: {}
   },
   numberSub: function (e) {
     var page = this;
@@ -68,27 +76,48 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  async onLoad(options) {
-    console.log(options)
-    let _options = options
-    let data = {
-      cart_id_list: _options.cart_id_list,
-      // address_id: 1,
-      buy_type: 1
+  onLoad(options) {
+    this.setData({
+      page_options: options
+    })
+  },
+  async onShow() {
+    let _options = this.data.page_options
+    let _oData = {}
+    if (_options.cart_id_list) { // 购物车结算
+      _oData = {
+        cart_id_list: _options.cart_id_list,
+        // address_id: 1,
+        buy_type: 1
+      }
+    } else if (_options.goods_id) { // 立即购买
+      _oData = _options
+      _oData.buy_type = 1
     }
+
     const RES = await app.fetch({
       url: api.order.submit_preview,
-      // method: 'POST',
-      data
+      data: _oData
     })
+
+    const ULIST = this.unitPriceFactory(RES.list)
+
     this.setData({
       address: RES.address,
       priview_data: RES,
-      goods_list: RES.list,
+      goods_list: ULIST,
       total_price: RES.total_price,
       express_price: RES.express_price,
       cart_id_list: RES.cart_id_list
     })
+  },
+  unitPriceFactory(unitList) { // 单价设置
+    let _unitList = unitList
+    _unitList.forEach((element) => {
+      element.unit_price = div(element.price, element.num)
+    })
+
+    return _unitList
   },
   getOffline: function (e) {
     var express = this.data.express_price;
@@ -109,10 +138,17 @@ Page({
   },
   async orderSubmit() { // 提交订单再进行支付
     let _cart_id_list = this.data.cart_id_list
+    if (!this.data.address) {
+      wx.showToast({
+        icon: 'none',
+        title: '请填写收货地址'
+      })
+      return
+    }
     wx.showLoading({
       title: "正在提交",
       mask: true,
-    });
+    })
     //提交订单
     try {
       const RES_SUBMIT = await app.fetch({
@@ -135,8 +171,9 @@ Page({
       })
       // 调起支付窗口
       this.wakeupPayWindow(RES_PAY)
-    } catch (error) {}
-
+    } catch (error) {
+      wx.hideLoading()
+    }
   },
   // 调起支付接口
   wakeupPayWindow(pay_msg) {
@@ -144,11 +181,39 @@ Page({
     wx.requestPayment(Object.assign(pay_msg, {
       success(err_log) {
         console.log(err_log, 'success pay')
+        setTimeout(() => {
+          wx.navigateTo({
+            url: '/pages/order/order'
+          })
+        }, 1000)
       },
-      fail (err_log) { // 1.用户取消 2.支付失败(含详细原因)
+      fail(err_log) { // 1.用户取消 2.支付失败(含详细原因)
         console.log(err_log, 'error pay')
+        let sMsg = err_log.errMsg
+        if (sMsg === 'requestPayment:fail cancel') {
+          wx.showToast({
+            icon: 'none',
+            title: '支付取消'
+          })
+          setTimeout(() => {
+            wx.navigateTo({
+              url: '/pages/order/order'
+            })
+          }, 1000)
+        } else {
+          wx.showToast({
+            icon: 'none',
+            title: '支付失败'
+          })
+          setTimeout(() => {
+            wx.navigateTo({
+              url: '/pages/order/order'
+            })
+          }, 1000)
+        }
+        wx.hideLoading()
       },
-      complete (err_log) {
+      complete(err_log) {
 
       }
     }))

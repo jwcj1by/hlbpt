@@ -5,6 +5,7 @@
     "pages/my-zero-order/my-zero-order",
     "pages/express-detail/express-detail",
     "pages/my-tan/my-tan",
+    "pages/pingtuan/pingtuan",
     "pages/order-detail/order-detail",
     "pages/zeroyuan/zeroyuan",
     "pages/tan-detail/tan-detail",
@@ -35,7 +36,7 @@
     "color": "#7f8389",
     "selectedColor": "#e71a41",
     "borderStyle": "#eaebec",
-    "backgroundColor": "#f7f7fa",
+    "backgroundColor": "#FFFFFF",
     "list": [
       {
         "pagePath": "pages/index/index",

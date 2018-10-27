@@ -1,5 +1,5 @@
 {
-	"description": "项目配置文件",
+	"description": "项目配置文件。",
 	"packOptions": {
 		"ignore": []
 	},
@@ -8,15 +8,13 @@
 		"es6": true,
 		"postcss": true,
 		"minified": true,
-		"newFeature": true
+		"newFeature": true,
+		"nodeModules": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.3.0",
+	"libVersion": "1.9.94",
 	"appid": "wx87c4128a69091ba4",
-	"projectname": "GJL",
-	"debugOptions": {
-		"hidedInDevtools": []
-	},
+	"projectname": "%E7%BA%A2%E5%96%87%E5%8F%AD%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%95%86%E5%9F%8E",
 	"isGameTourist": false,
 	"condition": {
 		"search": {
@@ -39,34 +37,37 @@
 			"current": 5,
 			"list": [
 				{
+					"id": 0,
+					"name": "别人",
+					"pathName": "pages/zeroyuan/zeroyuan",
+					"query": "scene=50",
+					"scene": "1007"
+				},
+				{
+					"id": 1,
+					"name": "pages/tan-datail/tan-datail",
+					"pathName": "pages/tan-detail/tan-detail",
+					"query": "id=51",
+					"scene": "1012"
+				},
+				{
+					"id": -1,
+					"name": "order",
+					"pathName": "pages/order/order",
+					"query": "id=5",
+					"scene": "1012"
+				},
+				{
+					"id": 3,
+					"name": "商品详情",
+					"pathName": "pages/standard-good-detail/standard-good-detail",
+					"query": "id=13"
+				},
+				{
 					"id": -1,
 					"name": "购物车",
 					"pathName": "pages/shopping-cart/shopping-cart",
 					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "收货地址",
-					"pathName": "pages/address/address",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "编辑收货地址",
-					"pathName": "pages/address-edit/address-edit",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "个人中心",
-					"pathName": "pages/user/user",
-					"query": ""
-				},
-				{
-					"id": 4,
-					"name": "商品详情",
-					"pathName": "pages/standard-good-detail/standard-good-detail",
-					"query": "id=11"
 				},
 				{
 					"id": -1,

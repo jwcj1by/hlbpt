@@ -14,13 +14,13 @@
 	<!-- 分类列表 -->
 	<view class="fenlei-list" wx:if="{{category_list_show}}">
 		<view class="ul">
-			<view
+			<view 
 			      class="li"
 			      wx:for="{{nav_category}}"
 			      wx:for-index="index"
 			      wx:for-item="item"
 			      wx:key="{{index}}"
-			      data-id="{{item.id}}"
+			      data-id="{{index}}"
 			      bind:tap="getList">
 				<image class="pic" src="{{item.pic_url}}" />
 				<text class="txt">{{item.name}}</text>

@@ -16,7 +16,8 @@ Page({
     cart_list: [],
     cart_id_list: [],
     total_price: 0,
-    isSelectedAll: false
+    isSelectedAll: false,
+    isPageOnload: true
   },
   async onShow() {
     this.setData({
@@ -24,17 +25,33 @@ Page({
       cart_list: [],
       cart_id_list: [],
       total_price: 0,
-      isSelectedAll: false
+      isSelectedAll: false,
+      isPageOnload: true
     })
     try {
       const _RES = await app.fetch({
         url: api.cart.list
       })
       const LIST = _RES.list
-      this.unitPriceFactory(LIST)
-      this.totalPriceFactory(LIST)
-      this.selectedFactory()
+      wx.setStorageSync('cart_list', LIST)
+      app.setGloTabBarBadge(LIST.length) // 设置角标
+      await this.unitPriceFactory(LIST)
+      await this.totalPriceFactory(LIST)
+      await this.selectedFactory()
+      this.setData({
+        isPageOnload: false
+      })
     } catch (error) {}
+  },
+  onHide() {
+    this.setData({
+      editing: false,
+      cart_list: [],
+      cart_id_list: [],
+      total_price: 0,
+      isSelectedAll: false,
+      isPageOnload: true
+    })
   },
   // 编辑购物车
   editCart() {
@@ -89,7 +106,7 @@ Page({
     if (_unitItem.num <= _unitItem.max_num) {
       _unitItem.num++
 
-      await this._syncNum(_unitItem.cart_id, _unitItem.num)
+      await this._syncNum(_unitId, _unitItem.num)
 
       this.setData({
         cart_list: _cartList
@@ -99,20 +116,36 @@ Page({
   },
   // 减少数量
   async reduceEleNum(event) {
-    let _index = event.target.dataset.index
-
-    let _cartList = this.data.cart_list
     let _unitId = event.currentTarget.dataset.id
+    let _cartList = this.data.cart_list
     let _unitItem = _cartList[_unitId]
+    let _nNum = _unitItem.num
 
-    if (_unitItem.num > 1) {
-      _unitItem.num--
+    if (_nNum >= 1) {
+      _nNum--
+      if (_nNum === 0) { // 自动删除商品
+        try {
+          const RES = await app.fetch({
+            url: api.cart.delete,
+            data: {
+              cart_id_list: [_unitItem.cart_id]
+            }
+          })
+          let aData = this.data.cart_list
+          aData.splice(_unitId, 1)
+          app.setGloTabBarBadge(aData.length) // 设置角标
+          this.setData({
+            cart_list: aData
+          })
 
-      await this._syncNum(_unitItem.cart_id, _unitItem.num)
+          wx.showToast({
+            title: '删除成功'
+          })
 
-      this.setData({
-        cart_list: _cartList
-      })
+        } catch (error) {}
+      } else {
+        await this._syncNum(_unitId, _nNum)
+      }
       this.totalPriceFactory()
     }
   },
@@ -180,16 +213,21 @@ Page({
     })
   },
   async _syncNum(id, val) { // 后台同步数量
-    let num = val
-    let cart_id = id
+    let _id = id
+    let _nNum = val
+    let _cartList = this.data.cart_list
     try {
-      await app.fetch({
+      const RES = await app.fetch({
         url: api.cart.change_cart,
         method: 'POST',
         data: {
-          cart_id,
-          num
+          cart_id: _cartList[_id].cart_id,
+          num: _nNum
         }
+      })
+      _cartList[id].num = _nNum
+      this.setData({
+        cart_list: _cartList
       })
     } catch (error) {}
   },
@@ -201,7 +239,7 @@ Page({
     if (_unitItem.num <= _unitItem.max_num) {
       _unitItem.num++
 
-      await this._syncNum(_unitItem.cart_id, _unitItem.num)
+      await this._syncNum(_unitId, _unitItem.num)
 
       this.setData({
         cart_list: _cartList
@@ -217,7 +255,7 @@ Page({
     if (_unitItem.num > 1) {
       _unitItem.num--
 
-      await this._syncNum(_unitItem.cart_id, _unitItem.num)
+      await this._syncNum(_unitId, _unitItem.num)
 
       this.setData({
         cart_list: _cartList
@@ -239,7 +277,7 @@ Page({
       _unitItem.num = _value
     }
 
-    await this._syncNum(_unitItem.cart_id, _unitItem.num)
+    await this._syncNum(_unitId, _unitItem.num)
 
     this.setData({
       cart_list: _cartList
@@ -278,7 +316,7 @@ Page({
         title: '删除成功!'
       })
     } catch (error) {}
-
+    app.getShoppingCart()
     this.toggleSelectAll()
     this.setData({
       cart_list: _cart_list
@@ -288,16 +326,17 @@ Page({
     this.judgeMomentIsSelectAll()
   },
   settleAccounts() { // 去结算
-    // wx.showLoading({
-    //   title: "正在提交",
-    //   mask: true,
-    // })
-    if (this.data.cart_id_list) {
-      
+    if (this.data.cart_id_list.length > 0) {
+      wx.navigateTo({
+        url: `/pages/shopping-cart-submit/shopping-cart-submit?cart_id_list=${JSON.stringify(this.data.cart_id_list)}`
+      })
+    } else {
+      wx.showToast({
+        title: '您还没有选择商品哦',
+        icon: 'none'
+      })
     }
 
-    wx.navigateTo({
-      url: `/pages/shopping-cart-submit/shopping-cart-submit?cart_id_list=${JSON.stringify(this.data.cart_id_list)}`
-    })
+
   }
 })

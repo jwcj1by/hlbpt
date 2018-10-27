@@ -48,7 +48,7 @@
         </view>
         <view class='flex-row flex-spa attr-num'>
           <!-- 单价 -->
-          <view class="flex-grow-0 price">￥{{item.price}}</view>
+          <view class="flex-grow-0 price">￥{{item.unit_price}}</view>
           <!-- 数量 -->
           <view class="flex-grow-0">
             <text>x {{item.num}}</text>

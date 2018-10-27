@@ -1,0 +1,129 @@
+<view class="main">
+	<view class='top-tab'>
+		<view
+		      bindtap='onTab'
+		      class="tab-li {{ tabIndex == index ? 'tab-on' : '' }}"
+		      wx:for="{{topTab}}"
+		      wx:key="{{index}}"
+		      id="{{index}}">
+			{{item.name}}
+		</view>
+	</view>
+
+	<view class="list-item" hidden="{{tabIndex == 1}}">
+		<image mode="widthFix" class="top-image" src="/image/home-b1.png" />
+		<view class="home-a" wx:if="{{ snapup.length > 0}}">
+			<image mode="widthFix" src="/image/home-a.png" />
+		</view>
+
+		<view class='h-list'>
+			<block wx:for="{{snapup}}" wx:key="index">
+				<navigator url="{{'/pages/goods/goods?id=' + item.id + '&type=zero&promotions_id=' + item.promotions_id }}" wx:if="{{ insertTime[index] != '00:00:00' }}" class='h-item'>
+					<image class='p-item-bg' mode="widthFix" src="/image/p-item-bg.png" />
+					<image class='icon-suapup' mode="widthFix" src="/image/icon-suapup.png" />
+					<view class='h-time'>
+						<image class='h-time-icon' mode="widthFix" src="/image/icon-time.png" />
+						剩余时间：{{insertTime[index] == null ?"":insertTime[index]}}</view>
+					<view class='h-view'>
+						<view class='h-title'>{{ item.title }}</view>
+						<view>
+							<text class='h-fh'>¥</text>
+							<text class='h-jr'>{{item.new_price}}</text>
+							<text class='h-yj'>单买价¥{{ item.old_price }}</text>
+						</view>
+						<button class='h-btn'>立即0元购</button>
+					</view>
+					<view class='p-img'>
+						<image class='p-img-w' mode="widthFix" src="{{ item.pic_url }}" />
+					</view>
+				</navigator>
+			</block>
+		</view>
+
+		<view class="home-b" wx:if="{{ comingsoon.length > 0}}">
+			<image mode="widthFix" src="/image/home-b.png" />
+		</view>
+
+		<view class='h-list h-b'>
+			<block wx:for="{{comingsoon}}" wx:key="index">
+				<navigator url="{{'/pages/goods/goods?id=' + item.id + '&type=zero&promotions_id=' + item.promotions_id }}" wx:if="{{ soon[index] != '00:00:00' }}" class='h-item h-items'>
+					<image class='p-item-bg' mode="widthFix" src="/image/p-items-bg.png" />
+					<image class='icon-suapup' mode="widthFix" src="/image/icon-comingsoon.png" />
+					<view class='h-time'>
+						<image class='h-time-icon' mode="widthFix" src="/image/icon-time.png" />
+						剩余时间：{{soon[index] == null ?"":soon[index]}}</view>
+					<view class='h-view'>
+						<view class='h-title'>{{item.title}}</view>
+						<view>
+							<text class='h-fh'>¥</text>
+							<text class='h-jr'>{{item.new_price}}</text>
+							<text class='h-yj'>单买价¥{{ item.old_price }}</text>
+						</view>
+						<button class='h-btn'>查看详情</button>
+					</view>
+					<view class='p-img'>
+						<image class='p-img-w' mode="widthFix" src="{{item.pic_url}}" />
+					</view>
+				</navigator>
+			</block>
+		</view>
+
+		<view class="home-c" wx:if="{{ finished.length > 0}}">
+			<image mode="widthFix" src="/image/home-c.png" />
+		</view>
+
+		<view class='h-list h-c'>
+			<block wx:for="{{finished}}" wx:key="index">
+				<view class='h-itemss h-item' bindtap='ontozeros'>
+					<image class='p-item-bg' mode="widthFix" src="/image/p-itemss-bg.png" />
+					<image class='icon-suapup' mode="widthFix" src="/image/icon-finished.png" />
+					<view class='h-view'>
+						<view class='h-title'>{{ item.title }}</view>
+						<view>
+							<text class='h-fh'>¥</text>
+							<text class='h-jr'>{{item.new_price}}</text>
+							<text class='h-yj'>单买价¥{{ item.old_price }}</text>
+						</view>
+						<button class='h-btn'>查看详情</button>
+					</view>
+					<view class='p-img'>
+						<image class='p-img-w p-img-ws' mode="widthFix" src="{{item.pic_url}}" />
+					</view>
+				</view>
+			</block>
+		</view>
+
+	</view>
+
+	<view class="list-item list-item-two" hidden="{{tabIndex == 0}}">
+		<image mode="widthFix" class="top-home-b2" src="/image/home-b2.png" />
+		<view class="home-a two-a" wx:if="{{ snapup.length > 0}}">
+			<image mode="widthFix" src="/image/home-a.png" />
+		</view>
+
+		<view class='h-list'>
+			<block wx:for="{{snapups.snapup}}" wx:key="index">
+				<navigator url="{{'/pages/goods/goods?id=' + item.id + '&type=tan&promotions_id=' + item.promotions_id }}" class='h-item-two'>
+					<view class='h-view'>
+						<view class='h-title'>{{ item.title }}</view>
+						<view>
+							二人团
+							<text class='h-fh'>¥</text>
+							<text class='h-jr'>{{ item.new_price }}</text>
+						</view>
+						<text class='h-yj'>单买价¥{{ item.old_price }}</text>
+						<view class='flex-row flex-y-center top-btn'>
+							<button class='h-btn'>立即拼团</button>
+							<text class='h-yj' wx:if="{{item.sell_count > 0}}">已团购 {{ item.sell_count }}</text>
+						</view>
+					</view>
+					<view class='p-img-two'>
+						<image class='p-img-w' mode="widthFix" src="{{ item.pic_url }}" />
+					</view>
+				</navigator>
+			</block>
+		</view>
+
+	</view>
+</view>
+

@@ -44,9 +44,8 @@ Page({
     } catch (error) {}
   },
   async getList(event) {
-    const _cart_id = event.currentTarget.dataset.id
-
-    wx.setStorageSync('current_catgory_id', _cart_id)
+    const _currIndex = event.currentTarget.dataset.id
+    wx.setStorageSync('current_catgory_id', _currIndex + 1)
 
     wx.switchTab({
       url: `/pages/index/index`
@@ -129,6 +128,18 @@ Page({
     //   category_list_show: false
     // })
   },
+  async onGoodClick(e) { // 跳转至商品详情
+    let goods_id = e.currentTarget.dataset.msg.id
+    // let detail = await app.fetch({
+    //   url: api.default.goods,
+    //   data: {
+    //     id: goods_id
+    //   }
+    // })
+    wx.navigateTo({
+      url: `../standard-good-detail/standard-good-detail?id=${goods_id}`
+    })
+  },
   async onReachBottom() { // 上拉触底
     let active_nav = this.data.active_nav
     let current_page = this.data.current_page
@@ -156,5 +167,5 @@ Page({
     this.setData({
       isLoading: false
     })
-  },
+  }
 })

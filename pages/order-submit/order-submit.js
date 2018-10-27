@@ -72,6 +72,22 @@ Page({
       goods_infos: JSON.parse(options.goods_info)
     });
   },
+    /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow () {
+    var page = this;
+    var address = wx.getStorageSync("picker_address");
+    if (address) {
+      page.setData({
+        address: address,
+        name: address.name,
+        mobile: address.mobile
+      });
+      wx.removeStorageSync("picker_address");
+    }
+    page.getOrderData(page.data.options);
+  },
   bindkeyinput: function (e) {
     this.setData({
       content: e.detail.value
@@ -256,31 +272,13 @@ Page({
       }
     })
   },
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-    var page = this;
-    var address = wx.getStorageSync("picker_address");
-    if (address) {
-      page.setData({
-        address: address,
-        name: address.name,
-        mobile: address.mobile
-      });
-      wx.removeStorageSync("picker_address");
-    }
-    page.getOrderData(page.data.options);
-  },
-
-  getOrderData: function (options) {
-
-    var page = this;
-    var address_id = "";
+  getOrderData (options) {
+    let page = this
+    let address_id = ""
     if (page.data.address && page.data.address.id)
       address_id = page.data.address.id;
     if (options.cart_id_list) {
-      var cart_id_list = JSON.parse(options.cart_id_list);
+      let cart_id_list = JSON.parse(options.cart_id_list);
       wx.showLoading({
         title: "正在加载",
         mask: true,
@@ -292,7 +290,7 @@ Page({
           address_id: address_id,
         },
         success: function (res) {
-          wx.hideLoading();
+          wx.hideLoading()
           if (res.code == 0) {
             page.setData({
               total_price: parseFloat(res.data.total_price),
@@ -308,7 +306,7 @@ Page({
               send_type: res.data.send_type,
               level: res.data.level,
               total_price_1: parseFloat(res.data.total_price),
-            });
+            })
             if (res.data.send_type == 1) { //仅快递
               page.setData({
                 offline: 0,

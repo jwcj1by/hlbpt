@@ -1,5 +1,6 @@
 var util = require('./utils/utils.js');
 var api = require('./api.js');
+import regeneratorRuntime from 'libs/regenerator-runtime/runtime' // 支持async await
 
 App({
   is_on_launch: true,
@@ -65,6 +66,31 @@ App({
       slef.globalData.zeroshare = null
     }
   },
+  setGloTabBarBadge(_len) { // 设置角标
+    if (_len > 0) {
+      wx.setTabBarBadge({
+        index: 2,
+        text: `${_len}`
+      })
+    } else {
+      wx.removeTabBarBadge({
+        index: 2
+      })
+    }
+    this.globalData.shopping_cart_num = _len
+  },
+  async getShoppingCart() {
+    try {
+      const RES = await this.fetch({
+        url: api.cart.list
+      })
+      const LIST = RES.list
+      wx.setStorageSync('cart_list', LIST)
+      this.setGloTabBarBadge(LIST.length)
+    } catch (error) {
+      console.error(error)
+    }
+  },
   getStoreData: function () {
     var page = this;
     this.request({
@@ -100,7 +126,7 @@ App({
       }
     });
   },
-  login: function (object) {
+  login (object) {
     wx.navigateTo({
       url: '/pages/authorized/authorized'
     })
@@ -314,12 +340,13 @@ App({
     }
     _curPage.setData({
       tabBar: tabBar
-    });
+    })
   },
   globalData: {
     is_login: false,
     access_token: '',
     userInfo: null,
-    zeroshare: null
+    zeroshare: null,
+    shopping_cart_num: 0
   }
 })

@@ -1,0 +1,39 @@
+<!--components/component-good-list/component-good-list.wxml-->
+<!-- 商品列表 -->
+<view
+      wx:for="{{goodsList}}"
+      wx:for-index="g_idx"
+      wx:for-item="g_item"
+      class='v-good-list-item'
+      wx:key="{{g_idx}}"
+      hover-class=""
+      data-msg="{{g_item}}"
+      bindtap="onGoodClick">
+	<!-- 商品图片 -->
+	<view class='left'>
+		<image src="{{g_item.pic_url}}" />
+	</view>
+	<!-- 商品简略信息 -->
+	<view class='right'>
+		<!-- 商品名 -->
+		<view class='tit'>{{ g_item.name }}</view>
+		<!-- 介绍 -->
+		<view wx:if="{{g_item.desc}}" class='desc'>{{ g_item.desc }}</view>
+		<!-- 关联活动 -->
+		<view class='label'>
+			<block
+			       wx:for="{{g_item.services}}"
+			       wx:for-index="service_idx"
+			       wx:for-item="service_item"
+			       wx:key="{{service_idx}}">
+				<text>{{service_item}}</text>
+			</block>
+		</view>
+		<!-- 价格 -->
+		<view class='price'>
+			<text class='now'>￥{{ g_item.price }}</text>
+			<!-- <text class='old'>￥186</text> -->
+		</view>
+	</view>
+</view>
+

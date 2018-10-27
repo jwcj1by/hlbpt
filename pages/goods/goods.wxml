@@ -52,8 +52,7 @@
 								      wx:for="{{attr_group.attr_list}}"
 								      data-group-id="{{attr_group.attr_group_id}}"
 								      data-id="{{item.attr_id}}"
-								      bindtap="attrClick">
-									{{item.attr_name}}
+								      bindtap="attrClick">{{item.attr_name}}
 								</text>
 							</view>
 						</view>

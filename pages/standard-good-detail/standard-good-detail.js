@@ -39,19 +39,27 @@ Page({
     show: false,
     x: wx.getSystemInfoSync().windowWidth,
     y: wx.getSystemInfoSync().windowHeight - 20,
-    hideHeaderShow: false
+    hideHeaderShow: false,
+    share_modal_active: '',
+    no_scroll: false,
+    goods_qrcode: ''
   },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad(options) {
+    // 转发分享
+    wx.showShareMenu({
+      withShareTicket: true
+    })
+    //
     share_count = 0;
     p = 1;
     is_loading_comment = false;
     is_more_comment = true;
     this.setData({
       store: wx.getStorageSync('store'),
-      types: options.type,
+      // types: options.type,
       promotions_id: options.promotions_id || ''
     });
 
@@ -60,9 +68,9 @@ Page({
 
     var scene = decodeURIComponent(options.scene);
     if (user_id != undefined) {
-      parent_id = user_id;
+      parent_id = user_id
     } else if (scene != undefined) {
-      console.log("scene string=>" + scene);
+      console.log("scene string=>" + scene)
       //var scene_obj = utils.scene_decode(scene);
       //console.log("scene obj=>" + JSON.stringify(scene_obj));
       // if (scene_obj.uid && scene_obj.gid) {
@@ -75,12 +83,56 @@ Page({
     app.loginBindParent({
       parent_id: parent_id
     });
-    var page = this;
+    var page = this
     page.setData({
       id: options.id,
     });
     page.getGoods();
     page.getCommentList();
+  },
+  // 分享按钮点击
+  showShareModal() {
+    var page = this;
+    page.setData({
+      share_modal_active: "active",
+      no_scroll: true,
+    });
+  },
+  // 生成海报
+  getGoodsQrcode () {
+    var page = this;
+    page.setData({
+      goods_qrcode_active: "active",
+      share_modal_active: "",
+    });
+    if (page.data.goods_qrcode)
+      return true
+    app.request({
+      url: api.default.goods_qrcode,
+      data: {
+        goods_id: page.data.id,
+      },
+      success: function (res) {
+        if (res.code == 0) {
+          page.setData({
+            goods_qrcode: res.data.pic_url,
+          });
+        }
+        if (res.code == 1) {
+          page.goodsQrcodeClose();
+          wx.showModal({
+            title: "提示",
+            content: res.msg,
+            showCancel: false,
+            success: function (res) {
+              if (res.confirm) {
+
+              }
+            }
+          });
+        }
+      },
+    });
   },
   onPullDownRefresh: function () { // 下拉
     var self = this
@@ -143,7 +195,6 @@ Page({
 
           var detail = res.data.detail;
           WxParse.wxParse("detail", "html", detail, page);
-
         }
         if (res.code == 1) {
           wx.showModal({
@@ -274,18 +325,20 @@ Page({
   submitCart() {
     this.submit(this.data.cartbuy)
   },
-  submit(type) {
+  async submit(type) {
     var page = this
+
     if (!page.data.show_attr_picker) {
       page.setData({
         show_attr_picker: true,
       })
       return true;
     }
+
     if (page.data.miaosha_data && page.data.miaosha_data.rest_num > 0 && page.data.form.number > page.data.miaosha_data.rest_num) {
       wx.showToast({
         title: "商品库存不足，请选择其它规格或数量",
-        image: "/image/icon-warning.png"
+        icon: 'none'
       });
       return true;
     }
@@ -293,7 +346,7 @@ Page({
     if (page.data.form.number > page.data.goods.num) {
       wx.showToast({
         title: "商品库存不足，请选择其它规格或数量",
-        image: "/image/icon-warning.png"
+        icon: 'none'
       })
       return true
     }
@@ -340,21 +393,49 @@ Page({
     }
 
     if (type == 'BUY_NOW') { //立即购买
-      wx.navigateTo({
-        url: "/pages/order-submit/order-submit?goods_info=" + JSON.stringify({
-          goods_id: page.data.id,
-          attr: checked_attr_list,
-          num: page.data.form.number,
-          buy_type: 3
+      let _attr_ids = []
+      checked_attr_list.forEach((item) => {
+        _attr_ids.push({
+          attr_id: item.attr_id
         })
       })
+
+      const RES1 = await app.fetch({
+        url: api.cart.add_cart,
+        method: 'POST',
+        data: {
+          goods_id: page.data.id,
+          attr: JSON.stringify(_attr_ids),
+          num: page.data.form.number
+        }
+      })
+      const RES2 = await app.fetch({
+        url: api.cart.list
+      })
+      let currId = 0
+      const LIST = RES2.list
+      LIST.map((item, index) => {
+        console.log(item.goods_id)
+        console.log(page.data.id)
+        if (item.goods_id == page.data.id) {
+          currId = item.cart_id
+        }
+      })
+
+      wx.navigateTo({
+        url: `/pages/shopping-cart-submit/shopping-cart-submit?cart_id_list=${JSON.stringify([currId])}`
+      })
+
+
     }
   },
   async commit_cart(attr, num) {
     let _this = this
     let _attr_ids = []
     attr.forEach((item) => {
-      _attr_ids.push({attr_id: item.attr_id})
+      _attr_ids.push({
+        attr_id: item.attr_id
+      })
     })
     try {
       let res_add_cart = await app.fetch({
@@ -461,9 +542,10 @@ Page({
     });
 
   },
-  onZan: function (e) {
-    var page = this
-    console.log(e)
+  onZan(e) {
+    let _currIndex = e.currentTarget.dataset.index
+    let _currId = this.data.comment_list[_currIndex].oc_id
+    let page = this
     wx.showLoading({
       title: "正在加载",
       mask: true,
@@ -471,7 +553,7 @@ Page({
     app.request({
       url: api.order.order_praise,
       data: {
-        comment_id: e.currentTarget.id,
+        comment_id: _currId,
       },
       success: function (res) {
         wx.hideLoading();
@@ -480,6 +562,7 @@ Page({
           dd.forEach(function (v, index, array) {
             if (index == e.currentTarget.dataset.i) {
               v.is_praised = 'yes'
+              v.praise_count++
             }
           })
           page.setData({
@@ -560,7 +643,7 @@ Page({
       tab_detail: "",
       tab_comment: "active",
       tab_goods: ""
-    });
+    })
   },
   commentPicView: function (e) {
     // console.log(e);
@@ -572,35 +655,6 @@ Page({
     //   urls: page.data.comment_list[index].pic_list,
     // });
   },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload: function () {
-
-  },
-
   /**
    * 页面上拉触底事件的处理函数
    */
